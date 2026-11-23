@@ -45,7 +45,7 @@ body {
   padding-block: 20px 40px;
 }
 canvas.sprite { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
-.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.wrap { max-width: 840px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
 .px {
   background: var(--panel);
   box-shadow:
@@ -130,21 +130,31 @@ button:focus-visible, input:focus-visible { outline: 3px dashed var(--gold); out
 .verdict .you span { color: var(--ink-dim); }
 .pts { font-family: var(--display); font-size: clamp(28px, 7vw, 44px); text-shadow: 4px 4px 0 var(--red); font-variant-numeric: tabular-nums; }
 /* needle drop: a syringe plunges into a tissue cross-section; rarer answers go deeper */
-.drop { display: flex; gap: 24px; align-items: center; justify-content: center; width: 100%; flex-wrap: wrap; }
-.shaft { display: flex; gap: 10px; flex: none; }
-#vShaft { width: 144px; height: 384px; box-shadow: 0 0 0 4px var(--line), 0 0 0 8px #0a1522; }
-.layers { position: relative; width: 92px; height: 384px; text-align: left; }
-.layers span { position: absolute; left: 0; transform: translateY(-50%); font-family: var(--display); font-size: 8px; line-height: 1.5; color: var(--ink-dim); }
-.layers em { font-family: var(--body); font-style: normal; font-size: 16px; letter-spacing: 0; opacity: .8; }
+.drop { display: flex; gap: 28px; align-items: center; justify-content: center; width: 100%; }
+.shaft { --sh: min(66vh, 640px); display: flex; gap: 14px; flex: none; }
+#vShaft { height: var(--sh); width: calc(var(--sh) / 2); max-width: 100%; box-shadow: 0 0 0 5px var(--line), 0 0 0 10px #0a1522; }
+.layers { position: relative; width: 110px; height: var(--sh); text-align: left; }
+.layers span { position: absolute; left: 0; transform: translateY(-50%); font-family: var(--display); font-size: 10px; line-height: 1.5; color: var(--ink-dim); }
+.layers em { font-family: var(--body); font-style: normal; font-size: 19px; letter-spacing: 0; opacity: .8; }
 .layers span.hit { color: var(--gold); }
-.layers span.hit::before { content: "◀"; position: absolute; left: -12px; }
-.drop-text { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; flex: 1 1 220px; min-width: 0; }
+.layers span.hit::before { content: "◀"; position: absolute; left: -16px; }
+.drop-text { display: flex; flex-direction: column; gap: 12px; align-items: center; flex: 1 1 220px; min-width: 0; }
+@media (max-width: 760px) {
+  .drop { flex-direction: column; gap: 18px; }
+  .drop-text { order: -1; flex: none; }
+  .shaft { --sh: min(54vh, 470px); }
+}
 #vTitle.wait, #vPts.wait { visibility: hidden; }
 #vTitle.pop { animation: pop .3s steps(3); }
 @keyframes pop { 0% { transform: scale(1.5); } 100% { transform: scale(1); } }
 .verdict.thud { animation: thud .35s steps(4); }
 @keyframes thud { 25% { transform: translateY(8px); } 50% { transform: translateY(-4px); } 75% { transform: translateY(2px); } }
-@media (max-width: 560px) { #vShaft { width: 108px; height: 288px; } .layers { height: 288px; } }
+@media (max-width: 560px) {
+  .shaft { --sh: min(52vh, 440px); gap: 10px; }
+  .layers { width: 82px; }
+  .layers span { font-size: 8px; }
+  .layers em { font-size: 16px; }
+}
 .rarest { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .rarest div { background: var(--bg); padding: 8px 12px; display: flex; justify-content: space-between; gap: 12px; }
 .rarest .p { color: var(--gold); font-variant-numeric: tabular-nums; flex: none; }
@@ -250,7 +260,7 @@ button.small { font-size: 9px; padding: 8px 10px; }
       <div class="sub" id="vPrompt"></div>
       <div class="drop">
         <div class="shaft">
-          <canvas class="sprite" id="vShaft" width="48" height="128" aria-hidden="true"></canvas>
+          <canvas class="sprite" id="vShaft" width="64" height="128" aria-hidden="true"></canvas>
           <div class="layers" id="vLayers">
             <span style="top:20.3%">EPIDERMIS<br><em>common</em></span>
             <span style="top:32%">DERMIS</span>
@@ -334,11 +344,6 @@ add("Anatomy", "Parts of the ear", [
   "Eardrum|tympanic membrane","Cochlea","Ear canal|external auditory canal|external acoustic meatus|auditory canal","Pinna|auricle",
   "Malleus|hammer","Incus|anvil","Stapes|stirrup","Semicircular canals","Eustachian tube|auditory tube|pharyngotympanic tube",
   "Vestibule","Oval window","Round window","Organ of Corti|spiral organ","Utricle","Saccule","Auditory nerve|cochlear nerve|vestibulocochlear nerve"]);
-add("Anatomy", "Parts of the nephron & renal vasculature", [
-  "Glomerulus","Loop of Henle|nephron loop|henle","Bowman's capsule|bowman capsule|glomerular capsule","Proximal convoluted tubule|pct|proximal tubule",
-  "Distal convoluted tubule|dct|distal tubule","Collecting duct","Afferent arteriole","Efferent arteriole",
-  "Descending limb|thin descending limb","Ascending limb|thick ascending limb","Macula densa","Juxtaglomerular apparatus|juxtaglomerular cells|jga",
-  "Peritubular capillaries","Vasa recta"]);
 add("Anatomy", "Layers of the skin", [
   "Epidermis","Dermis","Hypodermis|subcutaneous|subcutis","Stratum corneum","Stratum basale|stratum germinativum|basal layer",
   "Stratum spinosum","Stratum granulosum","Stratum lucidum","Papillary dermis|papillary layer","Reticular dermis|reticular layer"]);
@@ -367,6 +372,62 @@ add("Anatomy", "Parts of the respiratory system", [
   "Lungs|lung","Trachea|windpipe","Alveoli|alveolus","Bronchi|bronchus","Nose|nasal cavity","Diaphragm","Bronchioles|bronchiole","Larynx|voice box",
   "Pharynx|throat","Epiglottis","Mouth","Vocal cords|vocal folds","Pleura|pleural membrane","Sinuses|paranasal sinuses","Intercostal muscles|intercostals",
   "Cilia","Surfactant","Capillaries|pulmonary capillaries"]);
+add("Anatomy", "A bone above the waist", [
+  "Skull|cranium","Ribs|rib","Spine|vertebrae|vertebra|backbone|spinal column","Collarbone|clavicle","Humerus|upper arm bone","Sternum|breastbone","Jaw|mandible|jawbone",
+  "Shoulder blade|scapula","Radius","Ulna","Finger bones|phalanges|phalanx","Wrist bones|carpals|carpal","Nasal bone|nose bone","Cheekbone|zygomatic|zygoma",
+  "Hand bones|metacarpals|metacarpal","Cervical vertebrae|neck vertebrae|c spine","Thoracic vertebrae|t spine","Lumbar vertebrae|lumbar|l spine","Maxilla|upper jaw",
+  "Frontal bone|frontal","Parietal bone|parietal","Temporal bone|temporal","Occipital bone|occipital","Hyoid","Scaphoid","Lunate","Hamate","Sphenoid","Ethmoid",
+  "Lacrimal","Vomer","Ear bones|malleus|incus|stapes|ossicles","Xiphoid process|xiphoid"]);
+add("Anatomy", "A bone below the waist", [
+  "Femur|thigh bone","Kneecap|patella","Tibia|shinbone|shin bone","Fibula","Toe bones|phalanges|phalanx","Pelvis|hip bone|hips","Heel bone|calcaneus|heel",
+  "Ankle bones|tarsals|tarsal","Foot bones|metatarsals|metatarsal","Tailbone|coccyx","Sacrum","Talus|ankle bone","Ilium","Ischium","Pubis|pubic bone",
+  "Navicular","Cuboid","Cuneiforms|cuneiform","Sesamoid"]);
+add("Anatomy", "A muscle below the head", [
+  "Biceps","Triceps","Abs|abdominals|rectus abdominis|six pack","Quads|quadriceps","Hamstrings|hamstring","Glutes|gluteus maximus|butt muscle","Calves|calf|gastrocnemius",
+  "Pecs|pectorals|pectoralis major|chest muscle","Deltoid|delts|shoulder muscle","Lats|latissimus dorsi","Traps|trapezius","Diaphragm","Heart|cardiac muscle|myocardium",
+  "Obliques|oblique","Forearm muscles|forearm flexors|wrist flexors","Hip flexors|hip flexor","Soleus","Rotator cuff","Sartorius","Serratus anterior|serratus",
+  "Rhomboids|rhomboid","Erector spinae","Tibialis anterior","Adductors|adductor|groin muscle","Intercostals|intercostal","Teres major","Brachioradialis",
+  "Psoas|iliopsoas","Piriformis","Sternocleidomastoid|scm","Levator scapulae","Gracilis"]);
+add("Anatomy", "A muscle in the head or face", [
+  "Tongue","Masseter|jaw muscle|chewing muscle","Temporalis","Orbicularis oculi|eye muscle around the eye|eyelid muscle","Orbicularis oris|lip muscle|mouth muscle",
+  "Frontalis|forehead muscle","Buccinator|cheek muscle","Zygomaticus|smile muscle|zygomaticus major","Extraocular muscles|eye muscles|superior rectus|lateral rectus|medial rectus",
+  "Corrugator supercilii|corrugator|frown muscle","Procerus","Mentalis|chin muscle","Nasalis|nose muscle","Risorius","Depressor anguli oris","Levator palpebrae|levator palpebrae superioris",
+  "Pterygoid|lateral pterygoid|medial pterygoid","Stapedius","Superior oblique","Platysma"]);
+add("Anatomy", "A part of the body above the waist", [
+  "Head","Arm","Hand","Chest","Neck","Shoulder","Face","Eye","Nose","Mouth","Ear","Elbow","Finger","Back","Stomach|belly|tummy","Wrist","Hair","Chin","Forehead",
+  "Cheek","Lips|lip","Teeth|tooth","Tongue","Thumb","Armpit|underarm|axilla","Ribs|rib cage","Belly button|navel|umbilicus","Collarbone","Eyebrow","Eyelash","Jaw","Knuckle",
+  "Fingernail|nail","Palm","Forearm","Temple","Nostril","Earlobe","Adam's apple|adams apple|larynx"]);
+add("Anatomy", "A part of the body below the waist", [
+  "Leg","Foot|feet","Knee","Toe","Ankle","Thigh","Hip","Heel","Butt|buttocks|bottom|glutes|rear","Shin","Calf","Toenail","Kneecap|patella","Arch","Sole",
+  "Groin","Big toe","Pinky toe|little toe","Ball of the foot","Achilles tendon|achilles","Pelvis","Instep","Back of the knee|popliteal"]);
+add("Anatomy", "A part of the face", [
+  "Eyes|eye","Nose","Mouth","Lips|lip","Cheeks|cheek","Chin","Forehead","Eyebrows|eyebrow","Ears|ear","Teeth|tooth","Eyelashes|eyelash","Eyelids|eyelid","Jaw|jawline",
+  "Nostrils|nostril","Temples|temple","Tongue","Dimples|dimple","Bridge of the nose|nose bridge","Gums","Pupil","Iris","Philtrum|cupid's bow","Septum","Cheekbones|cheekbone"]);
+add("Anatomy", "An organ in the chest", [
+  "Heart","Lungs|lung","Esophagus|oesophagus|food pipe","Trachea|windpipe","Thymus","Aorta","Bronchi|bronchus","Breasts|breast|mammary glands",
+  "Vena cava|superior vena cava","Lymph nodes|lymph node","Pericardium","Pleura","Pulmonary arteries|pulmonary artery","Thoracic duct"]);
+add("Anatomy", "An organ in the belly (abdomen)", [
+  "Stomach","Liver","Intestines|small intestine|guts|bowels|bowel","Kidneys|kidney","Large intestine|colon","Pancreas","Gallbladder|gall bladder","Spleen","Appendix",
+  "Bladder|urinary bladder","Uterus|womb","Ovaries|ovary","Adrenal glands|adrenal gland|adrenals","Duodenum","Rectum","Ureters|ureter","Cecum|caecum","Jejunum","Ileum","Peritoneum"]);
+add("Anatomy", "A joint in the body", [
+  "Knee","Elbow","Shoulder","Hip","Ankle","Wrist","Knuckles|knuckle","Neck","Jaw|tmj|temporomandibular","Spine|vertebral joints|facet joints","Toe joints|toe",
+  "Finger joints|finger","Sacroiliac|si joint","Ball and socket","Hinge joint|hinge","Pivot joint|pivot","Saddle joint|saddle","Gliding joint|gliding|plane joint",
+  "AC joint|acromioclavicular","Sternoclavicular|sc joint"]);
+add("Anatomy", "A part of the hand or arm", [
+  "Fingers|finger","Thumb","Palm","Wrist","Elbow","Forearm","Knuckles|knuckle","Fingernails|fingernail|nails","Upper arm","Shoulder","Biceps","Triceps","Pinky|pinky finger|little finger",
+  "Index finger|pointer finger","Ring finger","Middle finger","Fingertips|fingertip","Cuticle","Funny bone|ulnar nerve","Radius","Ulna","Humerus","Carpal tunnel","Fingerprint"]);
+add("Anatomy", "A part of the leg or foot", [
+  "Knee","Toes|toe","Ankle","Heel","Thigh","Calf","Shin","Kneecap|patella","Sole","Arch","Big toe","Toenails|toenail","Achilles tendon|achilles","Hamstrings|hamstring",
+  "Quads|quadriceps","Femur","Tibia","Ball of the foot","Instep","Fibula","Pinky toe|little toe","ACL|anterior cruciate ligament","Meniscus"]);
+add("Anatomy", "A body part that comes in pairs", [
+  "Eyes|eye","Ears|ear","Hands|hand","Feet|foot","Arms|arm","Legs|leg","Lungs|lung","Kidneys|kidney","Knees|knee","Elbows|elbow","Shoulders|shoulder","Nostrils|nostril",
+  "Eyebrows|eyebrow","Cheeks|cheek","Hips|hip","Ankles|ankle","Wrists|wrist","Thumbs|thumb","Lips|lip","Ovaries|ovary","Testicles|testes|testicle","Adrenal glands|adrenal",
+  "Tonsils|tonsil","Collarbones|clavicles|collarbone","Shoulder blades|scapulae|shoulder blade","Big toes|big toe","Femurs|femur","Fallopian tubes|fallopian tube"]);
+add("Anatomy", "A body part with exactly 3 letters", [
+  "Arm|arms","Leg|legs","Eye|eyes","Ear|ears","Toe|toes","Hip|hips","Lip|lips","Jaw|jaws","Rib|ribs","Gum|gums","Gut|guts","Abs","Lid|lids","Lap","Pec|pecs","Bum"]);
+add("Anatomy", "A part of the mouth", [
+  "Teeth|tooth","Tongue","Lips|lip","Gums|gum","Roof of the mouth|palate","Uvula|dangly thing","Tonsils|tonsil","Molars|molar","Canines|canine","Incisors|incisor",
+  "Wisdom teeth|wisdom tooth","Taste buds|taste bud","Cheeks|cheek","Jaw","Hard palate","Soft palate","Enamel","Premolars|premolar|bicuspids","Frenulum","Salivary glands|salivary gland","Throat"]);
 
 /* ---------- BIOLOGY ---------- */
 add("Biology", "Types of immune cells", [
@@ -400,18 +461,10 @@ add("Biology", "DNA and RNA vocabulary", [
   "Adenine","Thymine","Guanine","Cytosine","Uracil","Gene","Chromosome","Nucleotide","Double helix|helix","mRNA|messenger rna","tRNA|transfer rna",
   "Codon","Base pair","Deoxyribose","Ribose","Phosphate|phosphate group","rRNA|ribosomal rna","Anticodon","Intron","Exon","Promoter",
   "Start codon|aug","Stop codon","Hydrogen bonds","Histone","Telomere","Purine","Pyrimidine"]);
-add("Biology", "Players in DNA replication", [
-  "DNA polymerase|polymerase","Helicase","Ligase|dna ligase","Primase","Leading strand","Lagging strand","Okazaki fragments|okazaki",
-  "Replication fork","RNA primer|primer","Topoisomerase|gyrase|dna gyrase","Origin of replication|origin","Single-strand binding protein|ssb|single strand binding",
-  "Telomerase","Template strand","Semiconservative","Sliding clamp|pcna"]);
 add("Biology", "Biological macromolecules and their building blocks", [
   "Proteins|protein","Carbohydrates|carbohydrate|carbs","Lipids|lipid|fats","Nucleic acids|nucleic acid","Amino acids|amino acid","Glucose","DNA","RNA",
   "Fatty acids|fatty acid","Nucleotides|nucleotide","Monosaccharides|monosaccharide|simple sugar","Enzymes|enzyme","Starch","Glycerol","Glycogen",
   "Cellulose","Triglycerides|triglyceride","Phospholipids|phospholipid","Steroids|steroid|cholesterol","Polysaccharides|polysaccharide","Disaccharides|disaccharide|sucrose|lactose","Peptide bond"]);
-add("Biology", "The 20 amino acids (name or 3-letter code)", [
-  "Glycine|gly","Alanine|ala","Leucine|leu","Lysine|lys","Tryptophan|trp","Cysteine|cys","Glutamate|glutamic acid|glu","Valine|val","Serine|ser",
-  "Tyrosine|tyr","Methionine|met","Proline|pro","Phenylalanine|phe","Histidine|his","Isoleucine|ile","Arginine|arg","Aspartate|aspartic acid|asp",
-  "Glutamine|gln","Asparagine|asn","Threonine|thr"]);
 add("Biology", "Cellular respiration terms", [
   "ATP|adenosine triphosphate","Glycolysis","Krebs cycle|citric acid cycle|tca cycle|tca|krebs","Electron transport chain|etc","Mitochondria|mitochondrion",
   "Glucose","Oxygen|o2","Carbon dioxide|co2","Pyruvate|pyruvic acid","NADH","FADH2","Oxidative phosphorylation|oxphos","ATP synthase",
@@ -424,37 +477,23 @@ add("Biology", "Mendelian genetics vocabulary", [
   "Allele","Dominant","Recessive","Genotype","Phenotype","Homozygous","Heterozygous","Punnett square|punnett","Gene","Mutation","Carrier",
   "Codominance","Incomplete dominance","X-linked|sex linked","Autosomal","Pedigree","Law of segregation|segregation","Independent assortment",
   "Crossing over|recombination","Epistasis","Polygenic","Linkage|linked genes","Penetrance","Test cross|testcross"]);
-add("Biology", "Gram-positive bacteria (genus or species)", [
-  "Staphylococcus aureus|staph aureus|s aureus|mrsa|staphylococcus|staph","Streptococcus pneumoniae|strep pneumoniae|s pneumoniae|pneumococcus",
-  "Streptococcus pyogenes|strep pyogenes|s pyogenes|group a strep|gas","Clostridioides difficile|clostridium difficile|c diff|c difficile",
-  "Enterococcus|enterococcus faecalis|enterococcus faecium|vre","Listeria|listeria monocytogenes","Bacillus anthracis|anthrax",
-  "Streptococcus agalactiae|group b strep|gbs|s agalactiae","Clostridium tetani|c tetani|tetanus","Clostridium botulinum|c botulinum|botulism",
-  "Staphylococcus epidermidis|staph epidermidis|s epidermidis","Clostridium perfringens|c perfringens","Corynebacterium diphtheriae|corynebacterium|diphtheria",
-  "Bacillus cereus|b cereus","Staphylococcus saprophyticus|staph saprophyticus|s saprophyticus","Viridans streptococci|viridans strep|strep viridans|streptococcus mutans|s mutans",
-  "Actinomyces|actinomyces israelii","Nocardia","Cutibacterium acnes|propionibacterium acnes|c acnes|p acnes"]);
-add("Biology", "Gram-negative bacteria (genus or species)", [
-  "Escherichia coli|e coli|escherichia","Pseudomonas|pseudomonas aeruginosa|p aeruginosa","Salmonella","Klebsiella|klebsiella pneumoniae",
-  "Helicobacter pylori|h pylori|helicobacter","Neisseria gonorrhoeae|gonorrhea|gonococcus|n gonorrhoeae","Neisseria meningitidis|meningococcus|n meningitidis",
-  "Shigella","Haemophilus influenzae|h influenzae|hemophilus influenzae|haemophilus","Vibrio cholerae|vibrio|cholera","Campylobacter|campylobacter jejuni",
-  "Legionella|legionella pneumophila","Bordetella pertussis|bordetella|pertussis|whooping cough","Proteus|proteus mirabilis","Yersinia|yersinia pestis|yersinia enterocolitica",
-  "Acinetobacter|acinetobacter baumannii","Serratia|serratia marcescens","Enterobacter","Moraxella|moraxella catarrhalis","Bacteroides|bacteroides fragilis",
-  "Brucella","Francisella tularensis|francisella|tularemia","Bartonella","Pasteurella|pasteurella multocida","Citrobacter"]);
 add("Biology", "Viruses that infect humans", [
   "Influenza|flu","HIV|human immunodeficiency virus","SARS-CoV-2|covid|covid19|coronavirus","Measles|rubeola","Herpes simplex|hsv|herpes",
   "Varicella zoster|vzv|chickenpox|shingles","Hepatitis B|hbv","Hepatitis C|hcv","Hepatitis A|hav","Human papillomavirus|hpv","Ebola",
   "Rabies","Mumps","Rubella|german measles","Epstein-Barr|ebv","Cytomegalovirus|cmv","Respiratory syncytial virus|rsv","Rotavirus","Norovirus",
   "Polio|poliovirus","Zika","Dengue","Smallpox|variola","Rhinovirus","Adenovirus","West Nile","Yellow fever","Hepatitis D|hdv|delta","Hepatitis E|hev",
   "HTLV-1|htlv|human t lymphotropic virus","Hantavirus","Marburg","Mpox|monkeypox","Parvovirus B19|parvovirus","Chikungunya","Lassa"]);
-add("Biology", "Fungi and parasites that cause human disease", [
-  "Candida|candida albicans","Plasmodium|malaria|plasmodium falciparum","Aspergillus","Giardia","Toxoplasma|toxoplasma gondii|toxoplasmosis",
-  "Tapeworm|taenia|taenia solium|taenia saginata","Pinworm|enterobius","Cryptococcus","Trichomonas|trichomonas vaginalis","Histoplasma|histoplasmosis",
-  "Pneumocystis|pneumocystis jirovecii|pcp","Entamoeba histolytica|entamoeba|amoeba","Hookworm|necator|ancylostoma","Ascaris|roundworm",
-  "Schistosoma|schistosomiasis","Cryptosporidium","Trichophyton|ringworm|dermatophyte","Leishmania","Trypanosoma|trypanosoma cruzi|trypanosoma brucei",
-  "Coccidioides|coccidioidomycosis|valley fever","Blastomyces|blastomycosis","Mucor|rhizopus|mucormycosis","Naegleria fowleri|naegleria","Strongyloides","Echinococcus"]);
 add("Biology", "Parts of a bacterial cell", [
   "Cell wall","Flagellum|flagella","Ribosome|ribosomes|70s ribosome","Plasma membrane|cell membrane","Cytoplasm","Plasmid","Nucleoid|bacterial chromosome|dna",
   "Capsule","Pili|pilus","Peptidoglycan","Fimbriae|fimbria","Outer membrane","Endospore|spore","Lipopolysaccharide|lps|endotoxin","Periplasm|periplasmic space",
   "Teichoic acid","Glycocalyx|slime layer","Porins|porin","Mesosome"]);
+add("Biology", "Something your blood carries", [
+  "Oxygen","Red blood cells|red blood cell|rbc","White blood cells|white blood cell|wbc","Platelets|platelet","Plasma","Sugar|glucose|blood sugar","Carbon dioxide|co2",
+  "Water","Nutrients","Hormones|hormone","Iron","Proteins|protein","Antibodies|antibody","Salt|electrolytes|sodium","Cholesterol","Fat|lipids","Waste|urea",
+  "Vitamins|vitamin","Medicine|drugs","Clotting factors|clotting factor","Hemoglobin","Albumin","Heat"]);
+add("Biology", "A body fluid", [
+  "Blood","Sweat","Tears","Saliva|spit","Urine|pee","Mucus|snot","Bile","Plasma","Lymph","Stomach acid|gastric acid|gastric juice","Earwax|cerumen","Semen","Breast milk|milk",
+  "Pus","Cerebrospinal fluid|csf|spinal fluid","Synovial fluid|joint fluid","Vomit","Phlegm","Amniotic fluid","Interstitial fluid","Aqueous humor|aqueous humour"]);
 
 /* ---------- CHEMISTRY ---------- */
 add("Chemistry", "Elements found in the human body (name or symbol)", [
@@ -500,34 +539,13 @@ add("OR & Med Basics", "Values reported on a CBC", [
   "White blood cell count|wbc|white count|leukocytes","Hemoglobin|hgb|hb|haemoglobin","Platelets|plt|platelet count","Red blood cell count|rbc|erythrocytes",
   "Hematocrit|hct|haematocrit","Mean corpuscular volume|mcv","Neutrophils","Lymphocytes","Mean corpuscular hemoglobin|mch",
   "Mean corpuscular hemoglobin concentration|mchc","Red cell distribution width|rdw","Monocytes","Eosinophils","Basophils","Mean platelet volume|mpv","Reticulocytes|retic"]);
-add("OR & Med Basics", "Beta blockers", [
-  "Metoprolol","Propranolol","Atenolol","Carvedilol","Bisoprolol","Labetalol","Esmolol","Nebivolol","Sotalol",
-  "Timolol","Nadolol","Pindolol","Acebutolol","Betaxolol"]);
-add("OR & Med Basics", "Statins", [
-  "Atorvastatin","Simvastatin","Rosuvastatin","Pravastatin","Lovastatin","Fluvastatin","Pitavastatin"]);
-add("OR & Med Basics", "SSRIs and SNRIs", [
-  "Fluoxetine","Sertraline","Escitalopram","Citalopram","Paroxetine","Venlafaxine","Duloxetine","Fluvoxamine",
-  "Desvenlafaxine","Vortioxetine","Vilazodone","Levomilnacipran","Milnacipran"]);
 add("OR & Med Basics", "Antibiotic classes", [
   "Penicillins","Cephalosporins","Macrolides","Tetracyclines","Fluoroquinolones|quinolones","Aminoglycosides","Sulfonamides|sulfa drugs|sulphonamides",
   "Carbapenems","Glycopeptides","Lincosamides","Monobactams","Oxazolidinones","Nitroimidazoles","Polymyxins","Rifamycins",
   "Lipopeptides","Glycylcyclines","Nitrofurans","Streptogramins"]);
-add("OR & Med Basics", "Diabetes medications", [
-  "Metformin","Insulin","Semaglutide|ozempic","Glipizide","Sitagliptin","Empagliflozin","Glyburide|glibenclamide","Dapagliflozin",
-  "Liraglutide","Glimepiride","Pioglitazone","Tirzepatide","Dulaglutide","Canagliflozin","Linagliptin","Exenatide","Saxagliptin",
-  "Rosiglitazone","Alogliptin","Acarbose","Repaglinide","Ertugliflozin","Nateglinide","Pramlintide","Miglitol"]);
-add("OR & Med Basics", "Anticoagulants and antiplatelets", [
-  "Warfarin|coumadin","Heparin","Aspirin|asa","Clopidogrel|plavix","Apixaban|eliquis","Rivaroxaban|xarelto","Enoxaparin|lovenox",
-  "Dabigatran","Ticagrelor","Prasugrel","Edoxaban","Fondaparinux","Dalteparin","Argatroban","Bivalirudin","Dipyridamole",
-  "Cilostazol","Eptifibatide","Tirofiban","Abciximab","Ticlopidine","Vorapaxar"]);
 add("OR & Med Basics", "Opioids", [
   "Morphine","Fentanyl","Oxycodone","Hydrocodone","Codeine","Methadone","Tramadol","Hydromorphone|dilaudid","Heroin|diacetylmorphine",
   "Buprenorphine","Meperidine|pethidine|demerol","Oxymorphone","Tapentadol","Sufentanil","Remifentanil","Alfentanil","Levorphanol","Carfentanil"]);
-add("OR & Med Basics", "Antidotes and reversal agents", [
-  "Naloxone|narcan","N-acetylcysteine|acetylcysteine|nac|mucomyst","Flumazenil","Atropine","Vitamin K|phytonadione","Protamine|protamine sulfate",
-  "Glucagon","Digoxin immune fab|digifab|digibind|digoxin fab","Activated charcoal|charcoal","Fomepizole","Pralidoxime|2-pam",
-  "Methylene blue","Deferoxamine|desferrioxamine","Physostigmine","Hydroxocobalamin|cyanokit","Sodium bicarbonate|bicarbonate|bicarb",
-  "Idarucizumab|praxbind","Andexanet alfa|andexanet","Dantrolene","Dimercaprol|bal","Octreotide","Succimer|dmsa","Sugammadex","Calcium gluconate|calcium chloride|calcium"]);
 add("OR & Med Basics", "Over-the-counter medications", [
   "Ibuprofen|advil|motrin","Acetaminophen|tylenol|paracetamol","Aspirin","Naproxen|aleve","Diphenhydramine|benadryl","Loratadine|claritin",
   "Cetirizine|zyrtec","Omeprazole|prilosec","Pseudoephedrine|sudafed","Famotidine|pepcid","Calcium carbonate|tums","Loperamide|imodium",
@@ -550,18 +568,6 @@ add("OR & Med Basics", "Causes of chest pain", [
   "Pneumothorax|collapsed lung","Pneumonia","Pericarditis","Costochondritis","Panic attack|anxiety","Myocarditis","Esophageal spasm|oesophageal spasm",
   "Peptic ulcer|ulcer","Rib fracture","Shingles|herpes zoster","Pleurisy|pleuritis","Cholecystitis|gallstones","Boerhaave syndrome|boerhaave|esophageal rupture",
   "Cardiac tamponade|tamponade","Takotsubo|stress cardiomyopathy","Pancreatitis"]);
-add("OR & Med Basics", "Autoimmune diseases", [
-  "Rheumatoid arthritis|ra","Lupus|sle|systemic lupus erythematosus","Type 1 diabetes|t1d|type one diabetes","Multiple sclerosis|ms","Celiac disease|celiac|coeliac",
-  "Psoriasis","Crohn's disease|crohns|crohn","Hashimoto's thyroiditis|hashimotos|hashimoto","Graves' disease|graves","Ulcerative colitis|uc",
-  "Myasthenia gravis|mg","Sjogren's syndrome|sjogrens|sjogren","Vitiligo","Scleroderma|systemic sclerosis","Addison's disease|addisons|addison",
-  "Guillain-Barre syndrome|guillain barre|gbs","Ankylosing spondylitis","Pernicious anemia|pernicious anaemia","Dermatomyositis","Polymyositis",
-  "Autoimmune hepatitis","Primary biliary cholangitis|pbc|primary biliary cirrhosis","Goodpasture syndrome|goodpasture|anti gbm disease",
-  "Granulomatosis with polyangiitis|gpa|wegeners","Immune thrombocytopenia|itp","Alopecia areata"]);
-add("OR & Med Basics", "Types of anemia", [
-  "Iron deficiency","Sickle cell","Pernicious|b12 deficiency|vitamin b12 deficiency","Aplastic","Thalassemia|thalassaemia|beta thalassemia|alpha thalassemia",
-  "Folate deficiency|folic acid deficiency","Hemolytic|haemolytic|autoimmune hemolytic","Anemia of chronic disease|chronic disease|anemia of inflammation",
-  "Megaloblastic","G6PD deficiency|g6pd","Hereditary spherocytosis|spherocytosis","Sideroblastic","Fanconi","Paroxysmal nocturnal hemoglobinuria|pnh",
-  "Diamond-Blackfan|diamond blackfan","Lead poisoning|lead","Pyruvate kinase deficiency|pk deficiency"]);
 add("OR & Med Basics", "Medical imaging techniques", [
   "X-ray|radiograph|xray","CT|ct scan|computed tomography|cat scan","MRI|magnetic resonance imaging","Ultrasound|sonography|us","PET|pet scan|positron emission tomography",
   "Mammography|mammogram","Echocardiogram|echo|echocardiography","Fluoroscopy","Angiography|angiogram","DEXA|dxa|bone density scan",
@@ -648,6 +654,34 @@ add("OR & Med Basics", "Common medical abbreviations", [
   "CT|computed tomography","EKG|ecg|electrocardiogram","PRN|as needed","NPO|nothing by mouth","STAT|immediately","DNR|do not resuscitate","BID|twice a day|twice daily",
   "PO|by mouth","OR|operating room","Rx|prescription","Dx|diagnosis","Hx|history","Tx|treatment","SOB|shortness of breath","CBC|complete blood count",
   "TID|three times a day","QID|four times a day","IM|intramuscular","SubQ|subcutaneous|sq|sc","PACU|post anesthesia care unit","H&P|history and physical","ROS|review of systems","HPI|history of present illness"]);
+add("OR & Med Basics", "Something in a first aid kit", [
+  "Band-Aids|bandaids|band aid|bandages|bandage","Gauze","Medical tape|tape","Gloves","Scissors","Antiseptic wipes|alcohol wipes|alcohol pads|wipes","Tweezers",
+  "Ice pack|cold pack","Thermometer","Pain reliever|ibuprofen|tylenol|advil|acetaminophen|aspirin","Antibiotic ointment|neosporin|ointment","Elastic bandage|ace bandage|ace wrap",
+  "Hydrocortisone cream|hydrocortisone","Cotton balls|cotton swabs|q tips","Safety pins","CPR mask|face shield","Splint","Sling|triangular bandage","Burn gel|aloe",
+  "Eye wash","Antihistamine|benadryl","Hand sanitizer","Emergency blanket|space blanket","Tourniquet","Butterfly closures|steri strips"]);
+add("OR & Med Basics", "A common injury", [
+  "Broken bone|fracture|broken arm|broken leg","Sprain|sprained ankle","Cut|laceration","Bruise|contusion","Burn","Concussion","Scrape|abrasion","Strain|pulled muscle",
+  "Dislocation|dislocated shoulder","Black eye","Whiplash","Torn ACL|acl tear","Sunburn","Splinter","Bite|dog bite","Blister","Nosebleed","Shin splints","Tennis elbow",
+  "Stress fracture","Puncture wound","Rotator cuff tear","Jammed finger","Frostbite","Turf toe"]);
+add("OR & Med Basics", "A symptom of a cold or flu", [
+  "Cough","Fever","Runny nose","Sore throat","Headache","Body aches|aches|muscle aches","Stuffy nose|congestion|stuffed nose","Sneezing|sneeze","Fatigue|tired|tiredness",
+  "Chills","Watery eyes","Loss of appetite","Sweating|sweats","Earache|ear pain","Nausea","Vomiting|throwing up","Diarrhea","Loss of smell|loss of taste",
+  "Shortness of breath","Swollen glands|swollen lymph nodes","Hoarse voice|hoarseness","Postnasal drip","Sinus pressure"]);
+add("OR & Med Basics", "A way to take medicine", [
+  "Pill|tablet","Shot|injection|needle","Capsule","Liquid|syrup","IV|intravenous","Inhaler","Cream|ointment","Eye drops","Nasal spray","Patch","Ear drops","Chewable|chewable tablet",
+  "Gummy|gummies","Lozenge|cough drop","Suppository","Under the tongue|sublingual","Nebulizer","Gel","Powder","Dissolving strip|film","Implant","Epipen|auto injector"]);
+add("OR & Med Basics", "Something in a hospital room", [
+  "Bed|hospital bed","IV pole|iv","Call button|nurse call","TV|television","Heart monitor|monitor","Curtain","Chair","Oxygen","Blood pressure cuff","Sink","Hand sanitizer",
+  "Whiteboard","Tray table","Pillow","Hospital gown|gown","Pulse oximeter","Gloves","Bathroom","Wristband|id bracelet","Remote","Bedpan","Thermometer","Window",
+  "Sharps container","Suction","Vomit bag|emesis basin"]);
+add("OR & Med Basics", "Something in an ambulance", [
+  "Stretcher|gurney","Defibrillator|aed","Oxygen tank|oxygen","Siren","Lights","Paramedic|emt","Bandages","Heart monitor|monitor","Splints|splint","Backboard",
+  "Neck brace|c collar|cervical collar","Medicine|medications","IV supplies|iv","Radio","Gloves","Blood pressure cuff","Stethoscope","Blankets|blanket","Suction",
+  "Bag valve mask|bvm|ambu bag","Trauma shears","Glucometer","Tourniquet","Narcan|naloxone","EpiPen|epinephrine"]);
+add("OR & Med Basics", "A common allergy", [
+  "Peanuts|peanut","Pollen|hay fever","Dust|dust mites","Cats|cat","Dogs|dog|pet dander","Shellfish|shrimp","Bee stings|bees|bee","Penicillin","Milk|dairy|lactose",
+  "Eggs|egg","Tree nuts|nuts|almonds|cashews","Latex","Mold","Wheat|gluten","Soy","Fish","Grass","Sesame","Strawberries","Sulfa drugs|sulfa","Perfume|fragrance","Nickel",
+  "Cockroaches","Aspirin","Contrast dye|iodine|contrast"]);
 
 /* ================= MATCHING ================= */
 const FILLER = new Set(["the","nerve","nerves","bone","bones","muscle","muscles","gland","glands","artery","arteries","valve","valves","lobe","disease","syndrome","virus","type","of","and","system"]);
@@ -708,6 +742,8 @@ function compile(p) {
 }
 PROMPTS.forEach(compile);
 
+// how many leading letters two strings share (breaks typo ties: "concusion" is closer to concussion than contusion)
+const sharedStart = (a, b) => { let n = 0; while (n < a.length && a[n] === b[n]) n++; return Math.min(n, 20); };
 function match(p, input) {
   const C = [...new Set([input, expand(input)].flatMap(s => [normFull(s), norm(s)]).map(stripS).filter(Boolean))];
   if (!C.length) return null;
@@ -731,7 +767,7 @@ function match(p, input) {
     items.forEach((it, i) => it.keys.forEach(k => {
       if (k.length < 4 || /\d/.test(k)) return;
       const d = Math.min(lev(c, k), c.length >= 5 && k.length > c.length ? lev(c, k.slice(0, c.length)) + 0.5 : 99);
-      if (d <= tol) consider(i, d * 100 + i);
+      if (d <= tol) consider(i, d * 100 - sharedStart(c, k) * 3 + i * 0.01);
     }));
   });
   if (best != null) return best;
@@ -744,7 +780,7 @@ function match(p, input) {
     items.forEach((it, i) => it.keys.map(phon).forEach(k => {
       if (k.length < 4 || /\d/.test(k)) return;
       const d = Math.min(lev(c, k), k.length > c.length ? lev(c, k.slice(0, c.length)) + 0.5 : 99);
-      if (d <= tol && d < c.length * 0.5) consider(i, d * 100 + i);
+      if (d <= tol && d < c.length * 0.5) consider(i, d * 100 - sharedStart(c, k) * 3 + i * 0.01);
     }));
   });
   if (best != null) return best;
@@ -754,7 +790,7 @@ function match(p, input) {
     const tol = w.length <= 5 ? 1 : w.length <= 8 ? 2 : 3;
     items.forEach((it, i) => it.words.forEach(aw => {
       const d = Math.min(lev(w, aw), aw.length > w.length && w.length >= 4 ? lev(w, aw.slice(0, w.length)) + 0.5 : 99);
-      if (d <= tol) consider(i, d * 100 + i);
+      if (d <= tol) consider(i, d * 100 - sharedStart(w, aw) * 3 + i * 0.01);
     }));
   });
   if (best != null) return best;
@@ -963,35 +999,35 @@ function showReveal(guess, it, idx) {
 }
 
 /* ================= NEEDLE DROP ================= */
-const SKIN = 20, LAYERS = [ // [top, bottom, name] in canvas pixels (48 x 128)
+const SKIN = 20, LAYERS = [ // [top, bottom, name] in canvas pixels (64 x 128)
   [20, 32, "the epidermis"], [32, 50, "the dermis"], [50, 74, "the fat layer"], [74, 104, "muscle"], [104, 128, "the bone marrow"]];
 const tissue = (() => {
-  const c = document.createElement("canvas"); c.width = 48; c.height = 128;
+  const c = document.createElement("canvas"); c.width = 64; c.height = 128;
   const g = c.getContext("2d");
   let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const px = (x, y, col) => { g.fillStyle = col; g.fillRect(x, y, 1, 1); };
-  g.fillStyle = "#0f1d2e"; g.fillRect(0, 0, 48, SKIN);
-  for (let x = 2; x < 48; x += 6) for (let y = 2; y < SKIN; y += 6) px(x, y, "#1b3550");
+  g.fillStyle = "#0f1d2e"; g.fillRect(0, 0, 64, SKIN);
+  for (let x = 2; x < 64; x += 6) for (let y = 2; y < SKIN; y += 6) px(x, y, "#1b3550");
   // epidermis
-  g.fillStyle = "#f0c4a0"; g.fillRect(0, 20, 48, 12);
-  g.fillStyle = "#d9a07c"; g.fillRect(0, 20, 48, 2);
-  for (let i = 0; i < 40; i++) px(Math.floor(rnd() * 48), 22 + Math.floor(rnd() * 10), "#e3ad8a");
+  g.fillStyle = "#f0c4a0"; g.fillRect(0, 20, 64, 12);
+  g.fillStyle = "#d9a07c"; g.fillRect(0, 20, 64, 2);
+  for (let i = 0; i < 40; i++) px(Math.floor(rnd() * 64), 22 + Math.floor(rnd() * 10), "#e3ad8a");
   // dermis with capillaries
-  g.fillStyle = "#e59a8c"; g.fillRect(0, 32, 48, 18);
-  for (let x = 0; x < 48; x++) px(x, 40 + Math.round(Math.sin(x / 3) * 2), "#c4505c");
-  for (let i = 0; i < 30; i++) px(Math.floor(rnd() * 48), 33 + Math.floor(rnd() * 16), "#d47f75");
+  g.fillStyle = "#e59a8c"; g.fillRect(0, 32, 64, 18);
+  for (let x = 0; x < 64; x++) px(x, 40 + Math.round(Math.sin(x / 3) * 2), "#c4505c");
+  for (let i = 0; i < 30; i++) px(Math.floor(rnd() * 64), 33 + Math.floor(rnd() * 16), "#d47f75");
   // fat lobules
-  g.fillStyle = "#f6dc8c"; g.fillRect(0, 50, 48, 24);
-  for (let y = 50; y < 74; y += 6) for (let x = (y / 6) % 2 ? 0 : 3; x < 48; x += 6) {
+  g.fillStyle = "#f6dc8c"; g.fillRect(0, 50, 64, 24);
+  for (let y = 50; y < 74; y += 6) for (let x = (y / 6) % 2 ? 0 : 3; x < 64; x += 6) {
     px(x, y, "#d8b55a"); px(x + 1, y, "#d8b55a"); px(x, y + 1, "#d8b55a");
   }
   // muscle with striations
-  g.fillStyle = "#b8434b"; g.fillRect(0, 74, 48, 30);
-  for (let y = 76; y < 104; y += 3) for (let x = 0; x < 48; x++) if ((x + y) % 7) px(x, y, "#8f2f38");
+  g.fillStyle = "#b8434b"; g.fillRect(0, 74, 64, 30);
+  for (let y = 76; y < 104; y += 3) for (let x = 0; x < 64; x++) if ((x + y) % 7) px(x, y, "#8f2f38");
   // bone, with marrow pores in the deep part
-  g.fillStyle = "#efe8d8"; g.fillRect(0, 104, 48, 24);
-  g.fillStyle = "#d6ccb4"; g.fillRect(0, 104, 48, 2);
-  for (let i = 0; i < 70; i++) px(Math.floor(rnd() * 48), 110 + Math.floor(rnd() * 18), rnd() < .5 ? "#d98b8b" : "#c9b99a");
+  g.fillStyle = "#efe8d8"; g.fillRect(0, 104, 64, 24);
+  g.fillStyle = "#d6ccb4"; g.fillRect(0, 104, 64, 2);
+  for (let i = 0; i < 70; i++) px(Math.floor(rnd() * 64), 110 + Math.floor(rnd() * 18), rnd() < .5 ? "#d98b8b" : "#c9b99a");
   // faint depth ticks on the left edge
   for (let y = SKIN; y < 128; y += 4) px(0, y, "rgba(10,21,34,.55)");
   return c;
@@ -1011,10 +1047,10 @@ function drawSyringe(g, cx, tip) {
 }
 const shaft = $("vShaft"), sg = shaft.getContext("2d");
 function paintShaft(tip) {
-  sg.clearRect(0, 0, 48, 128);
+  sg.clearRect(0, 0, 64, 128);
   sg.drawImage(tissue, 0, 0);
-  if (tip > SKIN) { sg.fillStyle = "#5a1520"; sg.fillRect(24, SKIN, 1, Math.round(tip) - SKIN); } // puncture track
-  drawSyringe(sg, 24, tip);
+  if (tip > SKIN) { sg.fillStyle = "#5a1520"; sg.fillRect(32, SKIN, 1, Math.round(tip) - SKIN); } // puncture track
+  drawSyringe(sg, 32, tip);
 }
 function whistle(dur) {
   if (muted) return;
