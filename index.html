@@ -129,12 +129,22 @@ button:focus-visible, input:focus-visible { outline: 3px dashed var(--gold); out
 .verdict .you b { font-weight: 400; color: var(--ink); }
 .verdict .you span { color: var(--ink-dim); }
 .pts { font-family: var(--display); font-size: clamp(28px, 7vw, 44px); text-shadow: 4px 4px 0 var(--red); font-variant-numeric: tabular-nums; }
-.meter { width: 100%; max-width: 520px; }
-.meter-bar { display: grid; grid-template-columns: repeat(20, 1fr); gap: 3px; background: var(--bg); padding: 4px; height: 26px; }
-.meter-bar i { opacity: .35; }
-.meter-bar i.z-common { background: var(--common); } .meter-bar i.z-uncommon { background: var(--scrub); } .meter-bar i.z-rare { background: var(--gold); }
-.meter-bar i.hit { opacity: 1; box-shadow: 0 0 0 3px var(--ink); animation: blink .6s steps(2) 3; }
-.meter-legend { display: flex; justify-content: space-between; font-size: 18px; color: var(--ink-dim); margin-top: 6px; }
+/* needle drop: a syringe plunges into a tissue cross-section; rarer answers go deeper */
+.drop { display: flex; gap: 24px; align-items: center; justify-content: center; width: 100%; flex-wrap: wrap; }
+.shaft { display: flex; gap: 10px; flex: none; }
+#vShaft { width: 144px; height: 384px; box-shadow: 0 0 0 4px var(--line), 0 0 0 8px #0a1522; }
+.layers { position: relative; width: 92px; height: 384px; text-align: left; }
+.layers span { position: absolute; left: 0; transform: translateY(-50%); font-family: var(--display); font-size: 8px; line-height: 1.5; color: var(--ink-dim); }
+.layers em { font-family: var(--body); font-style: normal; font-size: 16px; letter-spacing: 0; opacity: .8; }
+.layers span.hit { color: var(--gold); }
+.layers span.hit::before { content: "◀"; position: absolute; left: -12px; }
+.drop-text { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; flex: 1 1 220px; min-width: 0; }
+#vTitle.wait, #vPts.wait { visibility: hidden; }
+#vTitle.pop { animation: pop .3s steps(3); }
+@keyframes pop { 0% { transform: scale(1.5); } 100% { transform: scale(1); } }
+.verdict.thud { animation: thud .35s steps(4); }
+@keyframes thud { 25% { transform: translateY(8px); } 50% { transform: translateY(-4px); } 75% { transform: translateY(2px); } }
+@media (max-width: 560px) { #vShaft { width: 108px; height: 288px; } .layers { height: 288px; } }
 .rarest { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
 .rarest div { background: var(--bg); padding: 8px 12px; display: flex; justify-content: space-between; gap: 12px; }
 .rarest .p { color: var(--gold); font-variant-numeric: tabular-nums; flex: none; }
@@ -238,12 +248,23 @@ button.small { font-size: 9px; padding: 8px 10px; }
     <div class="px verdict">
       <span class="round" id="vRound"></span>
       <div class="sub" id="vPrompt"></div>
-      <h2 id="vTitle">RARE FIND!</h2>
-      <div class="you" id="vYou"></div>
-      <div class="pts" id="vPts">+0</div>
-      <div class="meter" id="vMeter">
-        <div class="meter-bar" id="vBar"></div>
-        <div class="meter-legend"><span>most common</span><span>rarest</span></div>
+      <div class="drop">
+        <div class="shaft">
+          <canvas class="sprite" id="vShaft" width="48" height="128" aria-hidden="true"></canvas>
+          <div class="layers" id="vLayers">
+            <span style="top:20.3%">EPIDERMIS<br><em>common</em></span>
+            <span style="top:32%">DERMIS</span>
+            <span style="top:48.4%">FAT</span>
+            <span style="top:69.5%">MUSCLE<br><em>uncommon</em></span>
+            <span style="top:90.6%">BONE<br>MARROW<br><em>rare</em></span>
+          </div>
+        </div>
+        <div class="drop-text">
+          <h2 id="vTitle">RARE FIND!</h2>
+          <div class="you" id="vYou"></div>
+          <div class="pts" id="vPts">+0</div>
+          <div class="sub" id="vDepth"></div>
+        </div>
       </div>
     </div>
     <div class="px">
@@ -918,15 +939,6 @@ function showReveal(guess, it, idx) {
     if (m) { const s = document.createElement("span"); s.textContent = ` (after ${m} miss${m === 1 ? "" : "es"})`; you.appendChild(s); }
   } else you.textContent = misses.length ? `No correct answer. Misses: ${misses.join(", ")}` : "No answer locked in.";
   $("vPts").textContent = "+" + (it ? it.pts : 0);
-  // rarity meter: 20 cells, the guessed answer's position lit
-  $("vMeter").hidden = !it;
-  const bar = $("vBar"); bar.innerHTML = "";
-  for (let c = 0; c < 20; c++) {
-    const frac = c / 19, z = frac >= 0.75 ? "rare" : frac >= 0.375 ? "uncommon" : "common";
-    const cell = document.createElement("i"); cell.className = "z-" + z;
-    if (it && Math.round((n > 1 ? idx / (n - 1) : 0) * 19) === c) cell.classList.add("hit");
-    bar.appendChild(cell);
-  }
   // rarest answers
   const rarest = $("vRarest"); rarest.innerHTML = "";
   cur.items.slice(-3).reverse().forEach(r => {
@@ -944,13 +956,123 @@ function showReveal(guess, it, idx) {
   });
   slots.parentElement.open = false;
   $("nextBtn").textContent = run.rounds.length >= ROUNDS ? "SEE FINAL SCORE" : "NEXT PROMPT";
-  if (!it) sfx.miss(); else sfx[it.rarity]();
   $("answer").blur();
   show("reveal");
   revealAt = performance.now();
+  startDrop(it, idx, n);
 }
 
-function next() { if (run.rounds.length >= ROUNDS) showFinal(); else startRound(); }
+/* ================= NEEDLE DROP ================= */
+const SKIN = 20, LAYERS = [ // [top, bottom, name] in canvas pixels (48 x 128)
+  [20, 32, "the epidermis"], [32, 50, "the dermis"], [50, 74, "the fat layer"], [74, 104, "muscle"], [104, 128, "the bone marrow"]];
+const tissue = (() => {
+  const c = document.createElement("canvas"); c.width = 48; c.height = 128;
+  const g = c.getContext("2d");
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const px = (x, y, col) => { g.fillStyle = col; g.fillRect(x, y, 1, 1); };
+  g.fillStyle = "#0f1d2e"; g.fillRect(0, 0, 48, SKIN);
+  for (let x = 2; x < 48; x += 6) for (let y = 2; y < SKIN; y += 6) px(x, y, "#1b3550");
+  // epidermis
+  g.fillStyle = "#f0c4a0"; g.fillRect(0, 20, 48, 12);
+  g.fillStyle = "#d9a07c"; g.fillRect(0, 20, 48, 2);
+  for (let i = 0; i < 40; i++) px(Math.floor(rnd() * 48), 22 + Math.floor(rnd() * 10), "#e3ad8a");
+  // dermis with capillaries
+  g.fillStyle = "#e59a8c"; g.fillRect(0, 32, 48, 18);
+  for (let x = 0; x < 48; x++) px(x, 40 + Math.round(Math.sin(x / 3) * 2), "#c4505c");
+  for (let i = 0; i < 30; i++) px(Math.floor(rnd() * 48), 33 + Math.floor(rnd() * 16), "#d47f75");
+  // fat lobules
+  g.fillStyle = "#f6dc8c"; g.fillRect(0, 50, 48, 24);
+  for (let y = 50; y < 74; y += 6) for (let x = (y / 6) % 2 ? 0 : 3; x < 48; x += 6) {
+    px(x, y, "#d8b55a"); px(x + 1, y, "#d8b55a"); px(x, y + 1, "#d8b55a");
+  }
+  // muscle with striations
+  g.fillStyle = "#b8434b"; g.fillRect(0, 74, 48, 30);
+  for (let y = 76; y < 104; y += 3) for (let x = 0; x < 48; x++) if ((x + y) % 7) px(x, y, "#8f2f38");
+  // bone, with marrow pores in the deep part
+  g.fillStyle = "#efe8d8"; g.fillRect(0, 104, 48, 24);
+  g.fillStyle = "#d6ccb4"; g.fillRect(0, 104, 48, 2);
+  for (let i = 0; i < 70; i++) px(Math.floor(rnd() * 48), 110 + Math.floor(rnd() * 18), rnd() < .5 ? "#d98b8b" : "#c9b99a");
+  // faint depth ticks on the left edge
+  for (let y = SKIN; y < 128; y += 4) px(0, y, "rgba(10,21,34,.55)");
+  return c;
+})();
+function drawSyringe(g, cx, tip) {
+  const r = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, Math.round(y), w, h); };
+  r(cx, tip - 12, 1, 12, "#dfe8ee");          // needle
+  r(cx, tip - 1, 1, 1, "#ffffff");            // glint at the tip
+  r(cx - 1, tip - 14, 3, 2, "#3fd0b8");       // hub
+  r(cx - 4, tip - 31, 9, 17, "#0a1522");      // barrel outline
+  r(cx - 3, tip - 30, 7, 15, "#e9f5f2");      // barrel
+  r(cx - 3, tip - 22, 7, 7, "#ff5d62");       // dose
+  for (let y = tip - 28; y < tip - 15; y += 3) r(cx + 2, y, 1, 1, "#557790"); // tick marks
+  r(cx - 6, tip - 32, 13, 2, "#0a1522");      // finger flange
+  r(cx, tip - 40, 1, 8, "#8fb0c2");           // plunger rod
+  r(cx - 3, tip - 42, 7, 2, "#0a1522");       // thumb press
+}
+const shaft = $("vShaft"), sg = shaft.getContext("2d");
+function paintShaft(tip) {
+  sg.clearRect(0, 0, 48, 128);
+  sg.drawImage(tissue, 0, 0);
+  if (tip > SKIN) { sg.fillStyle = "#5a1520"; sg.fillRect(24, SKIN, 1, Math.round(tip) - SKIN); } // puncture track
+  drawSyringe(sg, 24, tip);
+}
+function whistle(dur) {
+  if (muted) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+    o.type = "triangle"; o.frequency.setValueAtTime(1400, t); o.frequency.exponentialRampToValueAtTime(180, t + dur);
+    g.gain.setValueAtTime(.035, t); g.gain.linearRampToValueAtTime(.0001, t + dur);
+    o.connect(g).connect(actx.destination); o.start(t); o.stop(t + dur + .02);
+  } catch {}
+}
+let dropRaf = 0, dropping = false, finishDrop = () => {};
+function startDrop(it, idx, n) {
+  cancelAnimationFrame(dropRaf);
+  const title = $("vTitle"), ptsEl = $("vPts"), panel = document.querySelector("#reveal .verdict");
+  const labels = [...$("vLayers").children];
+  labels.forEach(l => l.classList.remove("hit"));
+  panel.classList.remove("thud"); title.classList.remove("pop", "wait"); ptsEl.classList.remove("wait");
+  $("vDepth").textContent = "";
+  if (!it) { paintShaft(SKIN - 3); sfx.miss(); dropping = false; return; }
+  const frac = n > 1 ? idx / (n - 1) : 0;
+  const target = SKIN + 3 + frac * (125 - SKIN - 3), start = -2;
+  const T = 0.45 + 0.85 * frac; // seconds: deeper drops fall longer
+  const layer = LAYERS.findIndex(([a, b]) => target >= a && target < b + 0.01);
+  title.classList.add("wait"); ptsEl.textContent = "+0";
+  dropping = true;
+  const land = () => {
+    if (!dropping) return;
+    dropping = false; cancelAnimationFrame(dropRaf);
+    paintShaft(target);
+    ptsEl.textContent = "+" + it.pts;
+    title.classList.add("pop"); title.classList.remove("wait");
+    void panel.offsetWidth; panel.classList.add("thud");
+    if (labels[layer]) labels[layer].classList.add("hit");
+    $("vDepth").textContent = `Your needle reached ${LAYERS[Math.max(0, layer)][2]}.`;
+    beep(90, .12, "square", .07); sfx[it.rarity]();
+  };
+  finishDrop = land;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return land();
+  whistle(T);
+  const t0 = performance.now();
+  const step = now => {
+    const t = (now - t0) / 1000;
+    if (t >= T) return land();
+    const u = t / T;
+    paintShaft(start + (target - start) * u * u);   // gravity: speeds up as it falls
+    ptsEl.textContent = "+" + Math.round(it.pts * u / 10) * 10;
+    dropRaf = requestAnimationFrame(step);
+  };
+  paintShaft(start);
+  dropRaf = requestAnimationFrame(step);
+}
+
+function next() {
+  if (dropping) return finishDrop();   // first press skips the animation
+  cancelAnimationFrame(dropRaf);
+  if (run.rounds.length >= ROUNDS) showFinal(); else startRound();
+}
 
 function showFinal() {
   const s = store.get("runStats", { runs: 0, best: 0, rares: 0 });
@@ -979,7 +1101,7 @@ $("startBtn").onclick = startRun;
 $("nextBtn").onclick = next;
 $("againBtn").onclick = startRun;
 $("menuBtn").onclick = () => { renderStats(); show("menu"); };
-const stopRound = () => { running = false; cancelAnimationFrame(raf); };
+const stopRound = () => { running = false; cancelAnimationFrame(raf); dropping = false; cancelAnimationFrame(dropRaf); };
 document.querySelectorAll(".js-home").forEach(b => b.onclick = () => { stopRound(); renderStats(); show("menu"); });
 document.querySelectorAll(".js-restart").forEach(b => b.onclick = () => { stopRound(); startRun(); });
 document.addEventListener("keydown", e => {
