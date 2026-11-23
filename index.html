@@ -156,6 +156,8 @@ details summary { cursor: pointer; font-family: var(--display); font-size: 10px;
 .recap .p { font-family: var(--display); font-size: 12px; font-variant-numeric: tabular-nums; }
 .newbest { font-family: var(--display); font-size: 10px; color: var(--bg); background: var(--gold); padding: 6px 8px; }
 
+.navrow { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: -6px; }
+button.small { font-size: 9px; padding: 8px 10px; }
 .mute { position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); right: max(10px, env(safe-area-inset-right, 0px)); font-size: 9px; padding: 8px 10px; z-index: 5; }
 
 @media (max-width: 560px) {
@@ -203,6 +205,7 @@ details summary { cursor: pointer; font-family: var(--display); font-size: 10px;
 
   <!-- GUESS -->
   <section id="game" class="wrap" hidden aria-label="Guess">
+    <div class="navrow"><button class="ghost small js-home" type="button">◀ HOME</button><button class="ghost small js-restart" type="button">↻ RESTART</button></div>
     <div class="px">
       <div class="hud">
         <div class="hud-left">
@@ -231,6 +234,7 @@ details summary { cursor: pointer; font-family: var(--display); font-size: 10px;
 
   <!-- REVEAL -->
   <section id="reveal" class="wrap" hidden aria-label="Reveal">
+    <div class="navrow"><button class="ghost small js-home" type="button">◀ HOME</button><button class="ghost small js-restart" type="button">↻ RESTART</button></div>
     <div class="px verdict">
       <span class="round" id="vRound"></span>
       <div class="sub" id="vPrompt"></div>
@@ -342,134 +346,64 @@ add("Anatomy", "Parts of the respiratory system", [
   "Lungs|lung","Trachea|windpipe","Alveoli|alveolus","Bronchi|bronchus","Nose|nasal cavity","Diaphragm","Bronchioles|bronchiole","Larynx|voice box",
   "Pharynx|throat","Epiglottis","Mouth","Vocal cords|vocal folds","Pleura|pleural membrane","Sinuses|paranasal sinuses","Intercostal muscles|intercostals",
   "Cilia","Surfactant","Capillaries|pulmonary capillaries"]);
-/* ---------- PHYSIOLOGY ---------- */
-add("Physiology", "Hormones of the anterior pituitary", [
-  "Growth hormone|gh|somatotropin","Prolactin|prl","Thyroid stimulating hormone|tsh|thyrotropin","Adrenocorticotropic hormone|acth|corticotropin",
-  "Follicle stimulating hormone|fsh","Luteinizing hormone|lh|luteinising hormone","Melanocyte stimulating hormone|msh"]);
-add("Physiology", "Components of a basic metabolic panel (BMP)", [
-  "Sodium|na","Potassium|k","Glucose|blood sugar","Creatinine|cr","Blood urea nitrogen|bun|urea","Chloride|cl","Bicarbonate|hco3|co2|carbon dioxide|bicarb","Calcium|ca"]);
-add("Physiology", "Values reported on a CBC", [
-  "White blood cell count|wbc|white count|leukocytes","Hemoglobin|hgb|hb|haemoglobin","Platelets|plt|platelet count","Red blood cell count|rbc|erythrocytes",
-  "Hematocrit|hct|haematocrit","Mean corpuscular volume|mcv","Neutrophils","Lymphocytes","Mean corpuscular hemoglobin|mch",
-  "Mean corpuscular hemoglobin concentration|mchc","Red cell distribution width|rdw","Monocytes","Eosinophils","Basophils","Mean platelet volume|mpv","Reticulocytes|retic"]);
-add("Physiology", "Types of immune cells", [
+
+/* ---------- BIOLOGY ---------- */
+add("Biology", "Types of immune cells", [
   "Neutrophil","Lymphocyte","T cell|t lymphocyte","B cell|b lymphocyte","Macrophage","Monocyte","Eosinophil","Basophil",
   "Natural killer cell|nk cell|nk","Mast cell","Dendritic cell","Plasma cell","Helper T cell|cd4","Cytotoxic T cell|cd8|killer t cell","Regulatory T cell|treg","Langerhans cell","Kupffer cell"]);
-add("Physiology", "Digestive enzymes", [
+add("Biology", "Digestive enzymes", [
   "Amylase","Lipase","Pepsin","Trypsin","Lactase","Chymotrypsin","Sucrase","Maltase","Elastase","Carboxypeptidase",
   "Enteropeptidase|enterokinase","Aminopeptidase","Phospholipase","Nuclease|ribonuclease|deoxyribonuclease","Lingual lipase","Dipeptidase"]);
-add("Physiology", "Vitamins (letter or name)", [
+add("Biology", "Vitamins (letter or name)", [
   "Vitamin C|c|ascorbic acid|ascorbate","Vitamin D|d|calciferol|cholecalciferol|ergocalciferol","Vitamin A|a|retinol",
   "Vitamin B12|b12|cobalamin|cyanocobalamin","Vitamin K|k|phylloquinone","Vitamin E|e|tocopherol","Folate · B9|b9|vitamin b9|folic acid|folate",
   "Thiamine · B1|b1|vitamin b1|thiamine|thiamin","Niacin · B3|b3|vitamin b3|niacin|nicotinic acid","Riboflavin · B2|b2|vitamin b2|riboflavin",
   "Pyridoxine · B6|b6|vitamin b6|pyridoxine","Biotin · B7|b7|vitamin b7|biotin|vitamin h","Pantothenic acid · B5|b5|vitamin b5|pantothenic acid|pantothenate"]);
-add("Physiology", "Lung volumes and capacities", [
-  "Tidal volume|tv|vt","Vital capacity|vc","Total lung capacity|tlc","Residual volume|rv","Functional residual capacity|frc",
-  "Inspiratory reserve volume|irv","Expiratory reserve volume|erv","Inspiratory capacity|ic"]);
-add("Physiology", "Phases of the cell cycle and mitosis", [
+add("Biology", "Phases of the cell cycle and mitosis", [
   "Prophase","Metaphase","Anaphase","Telophase","Interphase","Cytokinesis","S phase|s|synthesis","G1|g1 phase|gap 1",
   "G2|g2 phase|gap 2","M phase|m|mitosis","G0|g0 phase|quiescence","Prometaphase"]);
-add("Physiology", "Neurotransmitters", [
-  "Dopamine","Serotonin|5-ht|5ht","Acetylcholine|ach","GABA|gamma aminobutyric acid","Glutamate|glutamic acid","Norepinephrine|noradrenaline|ne",
-  "Epinephrine|adrenaline","Endorphins|endorphin|beta endorphin","Histamine","Glycine","Oxytocin","Substance P","Enkephalin|enkephalins",
-  "Nitric oxide|no","Adenosine","ATP|adenosine triphosphate","Aspartate","Dynorphin","Neuropeptide Y|npy","Anandamide"]);
-add("Physiology", "Hormones", [
+add("Biology", "Hormones", [
   "Insulin","Adrenaline|epinephrine","Estrogen|oestrogen|estradiol","Testosterone","Cortisol","Glucagon","Melatonin","Thyroid hormone|thyroxine|t4|t3|triiodothyronine",
   "Growth hormone|gh","Oxytocin","Progesterone","Antidiuretic hormone|adh|vasopressin","Prolactin","Aldosterone","Leptin","Ghrelin",
   "Follicle stimulating hormone|fsh","Luteinizing hormone|lh","Thyroid stimulating hormone|tsh","Parathyroid hormone|pth","Calcitonin",
   "ACTH|adrenocorticotropic hormone","Erythropoietin|epo","hCG|human chorionic gonadotropin","Renin","Somatostatin","Norepinephrine|noradrenaline"]);
-add("Physiology", "Parts of a neuron and the synapse", [
+add("Biology", "Parts of a neuron and the synapse", [
   "Axon","Dendrites|dendrite","Cell body|soma","Myelin sheath|myelin","Synapse","Axon terminal|terminal button|synaptic terminal","Nucleus",
   "Node of Ranvier|nodes of ranvier","Neurotransmitter","Axon hillock","Schwann cell","Synaptic cleft","Synaptic vesicle|vesicles",
   "Receptor|receptors","Oligodendrocyte","Sodium potassium pump|na k pump|sodium-potassium atpase","Voltage gated channels|ion channels|voltage gated sodium channels"]);
-add("Physiology", "The senses and sensory receptors", [
-  "Sight|vision","Hearing|audition","Touch","Taste|gustation","Smell|olfaction","Balance|equilibrium|vestibular sense","Rods","Cones",
-  "Pain|nociception","Temperature|thermoception","Proprioception|kinesthesia","Photoreceptors|photoreceptor","Hair cells|hair cell","Mechanoreceptors|mechanoreceptor",
-  "Chemoreceptors|chemoreceptor","Nociceptors|nociceptor","Thermoreceptors|thermoreceptor","Taste buds|taste bud","Interoception",
-  "Pacinian corpuscles|pacinian","Meissner corpuscles|meissner","Merkel cells|merkel discs|merkel","Ruffini endings|ruffini","Muscle spindles|muscle spindle","Golgi tendon organ"]);
-/* ---------- CELL & BIOCHEM ---------- */
-add("Cell & Biochem", "Organelles and parts of a eukaryotic cell", [
+add("Biology", "Organelles and parts of a eukaryotic cell", [
   "Nucleus","Mitochondria|mitochondrion","Ribosome","Cell membrane|plasma membrane","Golgi apparatus|golgi|golgi body","Endoplasmic reticulum|er",
   "Lysosome","Cytoplasm|cytosol","Vacuole","Nucleolus","Rough ER|rough endoplasmic reticulum|rer","Smooth ER|smooth endoplasmic reticulum|ser",
   "Chloroplast","Cell wall","Vesicle","Cytoskeleton|microtubules|microfilaments","Peroxisome","Centriole","Centrosome","Nuclear envelope|nuclear membrane","Nuclear pore","Cilia|cilium|flagellum|flagella"]);
-add("Cell & Biochem", "DNA and RNA vocabulary", [
+add("Biology", "DNA and RNA vocabulary", [
   "Adenine","Thymine","Guanine","Cytosine","Uracil","Gene","Chromosome","Nucleotide","Double helix|helix","mRNA|messenger rna","tRNA|transfer rna",
   "Codon","Base pair","Deoxyribose","Ribose","Phosphate|phosphate group","rRNA|ribosomal rna","Anticodon","Intron","Exon","Promoter",
   "Start codon|aug","Stop codon","Hydrogen bonds","Histone","Telomere","Purine","Pyrimidine"]);
-add("Cell & Biochem", "Players in DNA replication", [
+add("Biology", "Players in DNA replication", [
   "DNA polymerase|polymerase","Helicase","Ligase|dna ligase","Primase","Leading strand","Lagging strand","Okazaki fragments|okazaki",
   "Replication fork","RNA primer|primer","Topoisomerase|gyrase|dna gyrase","Origin of replication|origin","Single-strand binding protein|ssb|single strand binding",
   "Telomerase","Template strand","Semiconservative","Sliding clamp|pcna"]);
-add("Cell & Biochem", "Biological macromolecules and their building blocks", [
+add("Biology", "Biological macromolecules and their building blocks", [
   "Proteins|protein","Carbohydrates|carbohydrate|carbs","Lipids|lipid|fats","Nucleic acids|nucleic acid","Amino acids|amino acid","Glucose","DNA","RNA",
   "Fatty acids|fatty acid","Nucleotides|nucleotide","Monosaccharides|monosaccharide|simple sugar","Enzymes|enzyme","Starch","Glycerol","Glycogen",
   "Cellulose","Triglycerides|triglyceride","Phospholipids|phospholipid","Steroids|steroid|cholesterol","Polysaccharides|polysaccharide","Disaccharides|disaccharide|sucrose|lactose","Peptide bond"]);
-add("Cell & Biochem", "The 20 amino acids (name or 3-letter code)", [
+add("Biology", "The 20 amino acids (name or 3-letter code)", [
   "Glycine|gly","Alanine|ala","Leucine|leu","Lysine|lys","Tryptophan|trp","Cysteine|cys","Glutamate|glutamic acid|glu","Valine|val","Serine|ser",
   "Tyrosine|tyr","Methionine|met","Proline|pro","Phenylalanine|phe","Histidine|his","Isoleucine|ile","Arginine|arg","Aspartate|aspartic acid|asp",
   "Glutamine|gln","Asparagine|asn","Threonine|thr"]);
-add("Cell & Biochem", "Cellular respiration terms", [
+add("Biology", "Cellular respiration terms", [
   "ATP|adenosine triphosphate","Glycolysis","Krebs cycle|citric acid cycle|tca cycle|tca|krebs","Electron transport chain|etc","Mitochondria|mitochondrion",
   "Glucose","Oxygen|o2","Carbon dioxide|co2","Pyruvate|pyruvic acid","NADH","FADH2","Oxidative phosphorylation|oxphos","ATP synthase",
   "Acetyl-CoA|acetyl coa","Fermentation","Lactic acid|lactate","Anaerobic","Aerobic","Pyruvate oxidation|pyruvate dehydrogenase|link reaction","Chemiosmosis","Cytochrome c|cytochrome","Ethanol"]);
-add("Cell & Biochem", "Types of cells in the human body", [
+add("Biology", "Types of cells in the human body", [
   "Red blood cell|erythrocyte|rbc","White blood cell|leukocyte|wbc","Neuron|nerve cell","Muscle cell|myocyte","Sperm","Egg|ovum|oocyte","Skin cell|keratinocyte",
   "Stem cell","Fat cell|adipocyte","Platelet","Epithelial cell","Bone cell|osteocyte","Osteoblast","Osteoclast","Liver cell|hepatocyte","Macrophage",
   "Cardiac muscle cell|cardiomyocyte","Chondrocyte|cartilage cell","Fibroblast","Melanocyte","Beta cell","Goblet cell","Lymphocyte|t cell|b cell","Podocyte"]);
-add("Cell & Biochem", "Mendelian genetics vocabulary", [
+add("Biology", "Mendelian genetics vocabulary", [
   "Allele","Dominant","Recessive","Genotype","Phenotype","Homozygous","Heterozygous","Punnett square|punnett","Gene","Mutation","Carrier",
   "Codominance","Incomplete dominance","X-linked|sex linked","Autosomal","Pedigree","Law of segregation|segregation","Independent assortment",
   "Crossing over|recombination","Epistasis","Polygenic","Linkage|linked genes","Penetrance","Test cross|testcross"]);
-/* ---------- PHARMACOLOGY ---------- */
-add("Pharmacology", "Beta blockers", [
-  "Metoprolol","Propranolol","Atenolol","Carvedilol","Bisoprolol","Labetalol","Esmolol","Nebivolol","Sotalol",
-  "Timolol","Nadolol","Pindolol","Acebutolol","Betaxolol"]);
-add("Pharmacology", "ACE inhibitors and ARBs", [
-  "Lisinopril","Losartan","Enalapril","Captopril","Valsartan","Ramipril","Benazepril","Irbesartan","Olmesartan","Candesartan",
-  "Telmisartan","Quinapril","Perindopril","Fosinopril","Trandolapril","Moexipril","Azilsartan","Eprosartan"]);
-add("Pharmacology", "Statins", [
-  "Atorvastatin","Simvastatin","Rosuvastatin","Pravastatin","Lovastatin","Fluvastatin","Pitavastatin"]);
-add("Pharmacology", "SSRIs and SNRIs", [
-  "Fluoxetine","Sertraline","Escitalopram","Citalopram","Paroxetine","Venlafaxine","Duloxetine","Fluvoxamine",
-  "Desvenlafaxine","Vortioxetine","Vilazodone","Levomilnacipran","Milnacipran"]);
-add("Pharmacology", "Penicillins and cephalosporins", [
-  "Amoxicillin","Penicillin|penicillin g|penicillin v","Ampicillin","Cephalexin|cefalexin","Ceftriaxone","Cefazolin",
-  "Piperacillin|pip tazo|piperacillin tazobactam","Cefepime","Augmentin|amoxicillin clavulanate|co-amoxiclav","Nafcillin","Dicloxacillin",
-  "Cefuroxime","Ceftazidime","Cefdinir","Oxacillin","Cefotaxime","Cefoxitin","Ceftaroline","Cefixime","Cefpodoxime","Cefadroxil","Cefiderocol"]);
-add("Pharmacology", "Antibiotic classes", [
-  "Penicillins","Cephalosporins","Macrolides","Tetracyclines","Fluoroquinolones|quinolones","Aminoglycosides","Sulfonamides|sulfa drugs|sulphonamides",
-  "Carbapenems","Glycopeptides","Lincosamides","Monobactams","Oxazolidinones","Nitroimidazoles","Polymyxins","Rifamycins",
-  "Lipopeptides","Glycylcyclines","Nitrofurans","Streptogramins"]);
-add("Pharmacology", "Diuretics", [
-  "Furosemide|lasix","Hydrochlorothiazide|hctz","Spironolactone","Bumetanide","Chlorthalidone","Torsemide|torasemide","Mannitol",
-  "Acetazolamide","Metolazone","Amiloride","Triamterene","Eplerenone","Indapamide","Ethacrynic acid","Chlorothiazide"]);
-add("Pharmacology", "Diabetes medications", [
-  "Metformin","Insulin","Semaglutide|ozempic","Glipizide","Sitagliptin","Empagliflozin","Glyburide|glibenclamide","Dapagliflozin",
-  "Liraglutide","Glimepiride","Pioglitazone","Tirzepatide","Dulaglutide","Canagliflozin","Linagliptin","Exenatide","Saxagliptin",
-  "Rosiglitazone","Alogliptin","Acarbose","Repaglinide","Ertugliflozin","Nateglinide","Pramlintide","Miglitol"]);
-add("Pharmacology", "Anticoagulants and antiplatelets", [
-  "Warfarin|coumadin","Heparin","Aspirin|asa","Clopidogrel|plavix","Apixaban|eliquis","Rivaroxaban|xarelto","Enoxaparin|lovenox",
-  "Dabigatran","Ticagrelor","Prasugrel","Edoxaban","Fondaparinux","Dalteparin","Argatroban","Bivalirudin","Dipyridamole",
-  "Cilostazol","Eptifibatide","Tirofiban","Abciximab","Ticlopidine","Vorapaxar"]);
-add("Pharmacology", "Opioids", [
-  "Morphine","Fentanyl","Oxycodone","Hydrocodone","Codeine","Methadone","Tramadol","Hydromorphone|dilaudid","Heroin|diacetylmorphine",
-  "Buprenorphine","Meperidine|pethidine|demerol","Oxymorphone","Tapentadol","Sufentanil","Remifentanil","Alfentanil","Levorphanol","Carfentanil"]);
-add("Pharmacology", "Benzodiazepines", [
-  "Diazepam|valium","Lorazepam|ativan","Alprazolam|xanax","Clonazepam|klonopin","Midazolam","Chlordiazepoxide","Temazepam",
-  "Triazolam","Oxazepam","Clorazepate","Flurazepam","Estazolam","Clobazam","Remimazolam"]);
-add("Pharmacology", "Antidotes and reversal agents", [
-  "Naloxone|narcan","N-acetylcysteine|acetylcysteine|nac|mucomyst","Flumazenil","Atropine","Vitamin K|phytonadione","Protamine|protamine sulfate",
-  "Glucagon","Digoxin immune fab|digifab|digibind|digoxin fab","Activated charcoal|charcoal","Fomepizole","Pralidoxime|2-pam",
-  "Methylene blue","Deferoxamine|desferrioxamine","Physostigmine","Hydroxocobalamin|cyanokit","Sodium bicarbonate|bicarbonate|bicarb",
-  "Idarucizumab|praxbind","Andexanet alfa|andexanet","Dantrolene","Dimercaprol|bal","Octreotide","Succimer|dmsa","Sugammadex","Calcium gluconate|calcium chloride|calcium"]);
-add("Pharmacology", "Over-the-counter medications", [
-  "Ibuprofen|advil|motrin","Acetaminophen|tylenol|paracetamol","Aspirin","Naproxen|aleve","Diphenhydramine|benadryl","Loratadine|claritin",
-  "Cetirizine|zyrtec","Omeprazole|prilosec","Pseudoephedrine|sudafed","Famotidine|pepcid","Calcium carbonate|tums","Loperamide|imodium",
-  "Melatonin","Fexofenadine|allegra","Dextromethorphan|robitussin|dxm","Guaifenesin|mucinex","Bismuth subsalicylate|pepto bismol|pepto",
-  "Hydrocortisone|cortisone cream","Phenylephrine","Polyethylene glycol|miralax","Docusate|colace","Meclizine|dramamine","Simethicone|gas x",
-  "Esomeprazole|nexium","Lansoprazole|prevacid","Cimetidine","Nicotine patch|nicotine gum|nicotine","Bacitracin|neosporin","Doxylamine|unisom"]);
-/* ---------- MICROBIOLOGY ---------- */
-add("Microbiology", "Gram-positive bacteria (genus or species)", [
+add("Biology", "Gram-positive bacteria (genus or species)", [
   "Staphylococcus aureus|staph aureus|s aureus|mrsa|staphylococcus|staph","Streptococcus pneumoniae|strep pneumoniae|s pneumoniae|pneumococcus",
   "Streptococcus pyogenes|strep pyogenes|s pyogenes|group a strep|gas","Clostridioides difficile|clostridium difficile|c diff|c difficile",
   "Enterococcus|enterococcus faecalis|enterococcus faecium|vre","Listeria|listeria monocytogenes","Bacillus anthracis|anthrax",
@@ -477,114 +411,222 @@ add("Microbiology", "Gram-positive bacteria (genus or species)", [
   "Staphylococcus epidermidis|staph epidermidis|s epidermidis","Clostridium perfringens|c perfringens","Corynebacterium diphtheriae|corynebacterium|diphtheria",
   "Bacillus cereus|b cereus","Staphylococcus saprophyticus|staph saprophyticus|s saprophyticus","Viridans streptococci|viridans strep|strep viridans|streptococcus mutans|s mutans",
   "Actinomyces|actinomyces israelii","Nocardia","Cutibacterium acnes|propionibacterium acnes|c acnes|p acnes"]);
-add("Microbiology", "Gram-negative bacteria (genus or species)", [
+add("Biology", "Gram-negative bacteria (genus or species)", [
   "Escherichia coli|e coli|escherichia","Pseudomonas|pseudomonas aeruginosa|p aeruginosa","Salmonella","Klebsiella|klebsiella pneumoniae",
   "Helicobacter pylori|h pylori|helicobacter","Neisseria gonorrhoeae|gonorrhea|gonococcus|n gonorrhoeae","Neisseria meningitidis|meningococcus|n meningitidis",
   "Shigella","Haemophilus influenzae|h influenzae|hemophilus influenzae|haemophilus","Vibrio cholerae|vibrio|cholera","Campylobacter|campylobacter jejuni",
   "Legionella|legionella pneumophila","Bordetella pertussis|bordetella|pertussis|whooping cough","Proteus|proteus mirabilis","Yersinia|yersinia pestis|yersinia enterocolitica",
   "Acinetobacter|acinetobacter baumannii","Serratia|serratia marcescens","Enterobacter","Moraxella|moraxella catarrhalis","Bacteroides|bacteroides fragilis",
   "Brucella","Francisella tularensis|francisella|tularemia","Bartonella","Pasteurella|pasteurella multocida","Citrobacter"]);
-add("Microbiology", "Viruses that infect humans", [
+add("Biology", "Viruses that infect humans", [
   "Influenza|flu","HIV|human immunodeficiency virus","SARS-CoV-2|covid|covid19|coronavirus","Measles|rubeola","Herpes simplex|hsv|herpes",
   "Varicella zoster|vzv|chickenpox|shingles","Hepatitis B|hbv","Hepatitis C|hcv","Hepatitis A|hav","Human papillomavirus|hpv","Ebola",
   "Rabies","Mumps","Rubella|german measles","Epstein-Barr|ebv","Cytomegalovirus|cmv","Respiratory syncytial virus|rsv","Rotavirus","Norovirus",
   "Polio|poliovirus","Zika","Dengue","Smallpox|variola","Rhinovirus","Adenovirus","West Nile","Yellow fever","Hepatitis D|hdv|delta","Hepatitis E|hev",
   "HTLV-1|htlv|human t lymphotropic virus","Hantavirus","Marburg","Mpox|monkeypox","Parvovirus B19|parvovirus","Chikungunya","Lassa"]);
-add("Microbiology", "Fungi and parasites that cause human disease", [
+add("Biology", "Fungi and parasites that cause human disease", [
   "Candida|candida albicans","Plasmodium|malaria|plasmodium falciparum","Aspergillus","Giardia","Toxoplasma|toxoplasma gondii|toxoplasmosis",
   "Tapeworm|taenia|taenia solium|taenia saginata","Pinworm|enterobius","Cryptococcus","Trichomonas|trichomonas vaginalis","Histoplasma|histoplasmosis",
   "Pneumocystis|pneumocystis jirovecii|pcp","Entamoeba histolytica|entamoeba|amoeba","Hookworm|necator|ancylostoma","Ascaris|roundworm",
   "Schistosoma|schistosomiasis","Cryptosporidium","Trichophyton|ringworm|dermatophyte","Leishmania","Trypanosoma|trypanosoma cruzi|trypanosoma brucei",
   "Coccidioides|coccidioidomycosis|valley fever","Blastomyces|blastomycosis","Mucor|rhizopus|mucormycosis","Naegleria fowleri|naegleria","Strongyloides","Echinococcus"]);
-add("Microbiology", "Diseases we vaccinate against", [
+add("Biology", "Parts of a bacterial cell", [
+  "Cell wall","Flagellum|flagella","Ribosome|ribosomes|70s ribosome","Plasma membrane|cell membrane","Cytoplasm","Plasmid","Nucleoid|bacterial chromosome|dna",
+  "Capsule","Pili|pilus","Peptidoglycan","Fimbriae|fimbria","Outer membrane","Endospore|spore","Lipopolysaccharide|lps|endotoxin","Periplasm|periplasmic space",
+  "Teichoic acid","Glycocalyx|slime layer","Porins|porin","Mesosome"]);
+
+/* ---------- CHEMISTRY ---------- */
+add("Chemistry", "Elements found in the human body (name or symbol)", [
+  "Oxygen|o","Carbon|c","Hydrogen|h","Nitrogen|n","Calcium|ca","Iron|fe","Sodium|na","Potassium|k","Phosphorus|p","Chlorine|cl","Sulfur|s|sulphur",
+  "Magnesium|mg","Iodine|i","Zinc|zn","Copper|cu","Fluorine|f","Selenium|se","Manganese|mn","Cobalt|co","Chromium|cr","Molybdenum|mo"]);
+add("Chemistry", "The first 20 elements (name or symbol)", [
+  "Hydrogen|h","Oxygen|o","Carbon|c","Helium|he","Nitrogen|n","Sodium|na","Calcium|ca","Lithium|li","Neon|ne","Potassium|k","Chlorine|cl",
+  "Magnesium|mg","Fluorine|f","Sulfur|s|sulphur","Aluminum|al|aluminium","Silicon|si","Phosphorus|p","Argon|ar","Boron|b","Beryllium|be"]);
+add("Chemistry", "Noble gases and halogens", [
+  "Helium","Neon","Argon","Chlorine","Fluorine","Krypton","Xenon","Bromine","Iodine","Radon","Astatine","Oganesson","Tennessine"]);
+add("Chemistry", "Organic chemistry functional groups", [
+  "Hydroxyl|alcohol|oh","Carboxyl|carboxylic acid|cooh","Amine|amino|nh2","Carbonyl","Ketone","Aldehyde","Ester","Ether","Phosphate","Methyl",
+  "Amide","Alkene","Alkyne","Thiol|sulfhydryl","Phenyl|benzene|aromatic ring","Alkyl halide|halide|haloalkane","Nitrile|cyano","Anhydride","Imine","Acyl chloride|acid chloride","Epoxide"]);
+add("Chemistry", "Strong acids and strong bases", [
+  "Hydrochloric acid|hcl","Sulfuric acid|h2so4|sulphuric acid","Nitric acid|hno3","Sodium hydroxide|naoh","Potassium hydroxide|koh",
+  "Hydrobromic acid|hbr","Hydroiodic acid|hi","Perchloric acid|hclo4","Lithium hydroxide|lioh","Calcium hydroxide|caoh2","Barium hydroxide|baoh2",
+  "Chloric acid|hclo3","Strontium hydroxide|sroh2","Cesium hydroxide|csoh","Rubidium hydroxide|rboh"]);
+add("Chemistry", "Chemical bonds and intermolecular forces", [
+  "Covalent","Ionic","Hydrogen bond|hydrogen bonding|h bond","Metallic","Van der Waals","London dispersion|dispersion forces|london forces",
+  "Dipole-dipole|dipole dipole","Polar covalent","Nonpolar covalent","Peptide bond|peptide","Disulfide bond|disulfide|disulfide bridge","Sigma bond|sigma",
+  "Pi bond|pi","Ion-dipole|ion dipole","Glycosidic bond|glycosidic","Phosphodiester bond|phosphodiester","Hydrophobic interactions|hydrophobic","Coordinate covalent|dative"]);
+add("Chemistry", "Types of chemical reactions", [
+  "Combustion","Synthesis|combination","Decomposition","Single replacement|single displacement","Double replacement|double displacement|metathesis",
+  "Neutralization|acid base","Redox|oxidation reduction|oxidation|reduction","Precipitation","Hydrolysis","Dehydration synthesis|condensation|dehydration",
+  "Polymerization","Substitution|sn1|sn2","Elimination|e1|e2","Addition","Esterification","Isomerization","Saponification","Fermentation"]);
+add("Chemistry", "States of matter and phase changes", [
+  "Solid","Liquid","Gas","Melting","Freezing","Boiling|vaporization|evaporation","Condensation","Plasma","Sublimation","Deposition",
+  "Triple point","Critical point","Supercritical fluid","Bose-Einstein condensate|bose einstein","Fusion|heat of fusion","Phase diagram"]);
+add("Chemistry", "Lab equipment you'd use in a chem lab", [
+  "Beaker","Test tube","Graduated cylinder","Pipette|pipet|micropipette","Bunsen burner","Erlenmeyer flask|erlenmeyer","Burette|buret",
+  "Funnel","Thermometer","Balance|scale","Volumetric flask","Goggles|safety goggles","Hot plate","Fume hood","Centrifuge","Spectrophotometer",
+  "pH meter","Separatory funnel|sep funnel","Round bottom flask","Condenser","Watch glass","Crucible","Desiccator","Rotary evaporator|rotovap","Stir bar"]);
+add("Chemistry", "Common chemical compounds (name or formula)", [
+  "Water|h2o","Carbon dioxide|co2","Sodium chloride|nacl|table salt|salt","Glucose|c6h12o6","Ammonia|nh3","Methane|ch4","Hydrogen peroxide|h2o2",
+  "Ethanol|c2h5oh|alcohol","Sodium bicarbonate|baking soda|nahco3","Hydrochloric acid|hcl","Calcium carbonate|caco3|chalk|limestone","Carbon monoxide|co",
+  "Ozone|o3","Sulfuric acid|h2so4","Acetic acid|vinegar|ch3cooh","Sodium hydroxide|naoh|lye","Nitrous oxide|n2o|laughing gas","Sucrose|table sugar",
+  "Acetone","Ethylene|c2h4","Isopropyl alcohol|rubbing alcohol|isopropanol","Potassium chloride|kcl","Magnesium sulfate|epsom salt|mgso4","Benzene|c6h6"]);
+
+/* ---------- OR & MED BASICS ---------- */
+add("OR & Med Basics", "Components of a basic metabolic panel (BMP)", [
+  "Sodium|na","Potassium|k","Glucose|blood sugar","Creatinine|cr","Blood urea nitrogen|bun|urea","Chloride|cl","Bicarbonate|hco3|co2|carbon dioxide|bicarb","Calcium|ca"]);
+add("OR & Med Basics", "Values reported on a CBC", [
+  "White blood cell count|wbc|white count|leukocytes","Hemoglobin|hgb|hb|haemoglobin","Platelets|plt|platelet count","Red blood cell count|rbc|erythrocytes",
+  "Hematocrit|hct|haematocrit","Mean corpuscular volume|mcv","Neutrophils","Lymphocytes","Mean corpuscular hemoglobin|mch",
+  "Mean corpuscular hemoglobin concentration|mchc","Red cell distribution width|rdw","Monocytes","Eosinophils","Basophils","Mean platelet volume|mpv","Reticulocytes|retic"]);
+add("OR & Med Basics", "Beta blockers", [
+  "Metoprolol","Propranolol","Atenolol","Carvedilol","Bisoprolol","Labetalol","Esmolol","Nebivolol","Sotalol",
+  "Timolol","Nadolol","Pindolol","Acebutolol","Betaxolol"]);
+add("OR & Med Basics", "Statins", [
+  "Atorvastatin","Simvastatin","Rosuvastatin","Pravastatin","Lovastatin","Fluvastatin","Pitavastatin"]);
+add("OR & Med Basics", "SSRIs and SNRIs", [
+  "Fluoxetine","Sertraline","Escitalopram","Citalopram","Paroxetine","Venlafaxine","Duloxetine","Fluvoxamine",
+  "Desvenlafaxine","Vortioxetine","Vilazodone","Levomilnacipran","Milnacipran"]);
+add("OR & Med Basics", "Antibiotic classes", [
+  "Penicillins","Cephalosporins","Macrolides","Tetracyclines","Fluoroquinolones|quinolones","Aminoglycosides","Sulfonamides|sulfa drugs|sulphonamides",
+  "Carbapenems","Glycopeptides","Lincosamides","Monobactams","Oxazolidinones","Nitroimidazoles","Polymyxins","Rifamycins",
+  "Lipopeptides","Glycylcyclines","Nitrofurans","Streptogramins"]);
+add("OR & Med Basics", "Diabetes medications", [
+  "Metformin","Insulin","Semaglutide|ozempic","Glipizide","Sitagliptin","Empagliflozin","Glyburide|glibenclamide","Dapagliflozin",
+  "Liraglutide","Glimepiride","Pioglitazone","Tirzepatide","Dulaglutide","Canagliflozin","Linagliptin","Exenatide","Saxagliptin",
+  "Rosiglitazone","Alogliptin","Acarbose","Repaglinide","Ertugliflozin","Nateglinide","Pramlintide","Miglitol"]);
+add("OR & Med Basics", "Anticoagulants and antiplatelets", [
+  "Warfarin|coumadin","Heparin","Aspirin|asa","Clopidogrel|plavix","Apixaban|eliquis","Rivaroxaban|xarelto","Enoxaparin|lovenox",
+  "Dabigatran","Ticagrelor","Prasugrel","Edoxaban","Fondaparinux","Dalteparin","Argatroban","Bivalirudin","Dipyridamole",
+  "Cilostazol","Eptifibatide","Tirofiban","Abciximab","Ticlopidine","Vorapaxar"]);
+add("OR & Med Basics", "Opioids", [
+  "Morphine","Fentanyl","Oxycodone","Hydrocodone","Codeine","Methadone","Tramadol","Hydromorphone|dilaudid","Heroin|diacetylmorphine",
+  "Buprenorphine","Meperidine|pethidine|demerol","Oxymorphone","Tapentadol","Sufentanil","Remifentanil","Alfentanil","Levorphanol","Carfentanil"]);
+add("OR & Med Basics", "Antidotes and reversal agents", [
+  "Naloxone|narcan","N-acetylcysteine|acetylcysteine|nac|mucomyst","Flumazenil","Atropine","Vitamin K|phytonadione","Protamine|protamine sulfate",
+  "Glucagon","Digoxin immune fab|digifab|digibind|digoxin fab","Activated charcoal|charcoal","Fomepizole","Pralidoxime|2-pam",
+  "Methylene blue","Deferoxamine|desferrioxamine","Physostigmine","Hydroxocobalamin|cyanokit","Sodium bicarbonate|bicarbonate|bicarb",
+  "Idarucizumab|praxbind","Andexanet alfa|andexanet","Dantrolene","Dimercaprol|bal","Octreotide","Succimer|dmsa","Sugammadex","Calcium gluconate|calcium chloride|calcium"]);
+add("OR & Med Basics", "Over-the-counter medications", [
+  "Ibuprofen|advil|motrin","Acetaminophen|tylenol|paracetamol","Aspirin","Naproxen|aleve","Diphenhydramine|benadryl","Loratadine|claritin",
+  "Cetirizine|zyrtec","Omeprazole|prilosec","Pseudoephedrine|sudafed","Famotidine|pepcid","Calcium carbonate|tums","Loperamide|imodium",
+  "Melatonin","Fexofenadine|allegra","Dextromethorphan|robitussin|dxm","Guaifenesin|mucinex","Bismuth subsalicylate|pepto bismol|pepto",
+  "Hydrocortisone|cortisone cream","Phenylephrine","Polyethylene glycol|miralax","Docusate|colace","Meclizine|dramamine","Simethicone|gas x",
+  "Esomeprazole|nexium","Lansoprazole|prevacid","Cimetidine","Nicotine patch|nicotine gum|nicotine","Bacitracin|neosporin","Doxylamine|unisom"]);
+add("OR & Med Basics", "Diseases we vaccinate against", [
   "Measles","Mumps","Rubella","Polio","Influenza|flu","COVID-19|covid","Tetanus","Hepatitis B|hep b","Chickenpox|varicella","HPV|human papillomavirus",
   "Diphtheria","Pertussis|whooping cough","Shingles|zoster","Hepatitis A|hep a","Pneumococcus|pneumococcal|pneumonia","Meningococcus|meningococcal|meningitis",
   "Rotavirus","Hib|haemophilus influenzae type b|haemophilus influenzae","Rabies","Yellow fever","Typhoid","RSV|respiratory syncytial virus",
   "Tuberculosis|tb|bcg","Smallpox","Mpox|monkeypox","Cholera","Japanese encephalitis","Dengue","Ebola","Anthrax"]);
-/* ---------- CLINICAL ---------- */
-add("Clinical", "Symptoms of a heart attack", [
+add("OR & Med Basics", "Symptoms of a heart attack", [
   "Chest pain|chest pressure|chest tightness|angina","Shortness of breath|dyspnea|sob|breathlessness","Sweating|diaphoresis","Nausea",
   "Left arm pain|arm pain","Jaw pain","Vomiting","Dizziness|lightheadedness|lightheaded","Fatigue|tiredness","Back pain",
   "Anxiety|sense of doom|impending doom","Palpitations","Neck pain","Indigestion|heartburn|epigastric pain","Fainting|syncope","Cold sweat|clammy skin|clammy","Pallor|pale"]);
-add("Clinical", "Types of shock", [
+add("OR & Med Basics", "Types of shock", [
   "Hypovolemic","Septic|sepsis","Cardiogenic","Anaphylactic","Neurogenic","Hemorrhagic|haemorrhagic","Distributive","Obstructive","Endocrine|adrenal crisis"]);
-add("Clinical", "Causes of chest pain", [
+add("OR & Med Basics", "Causes of chest pain", [
   "Heart attack|myocardial infarction|mi|stemi|nstemi","Angina","Pulmonary embolism|pe","GERD|acid reflux|reflux|heartburn","Aortic dissection|dissection",
   "Pneumothorax|collapsed lung","Pneumonia","Pericarditis","Costochondritis","Panic attack|anxiety","Myocarditis","Esophageal spasm|oesophageal spasm",
   "Peptic ulcer|ulcer","Rib fracture","Shingles|herpes zoster","Pleurisy|pleuritis","Cholecystitis|gallstones","Boerhaave syndrome|boerhaave|esophageal rupture",
   "Cardiac tamponade|tamponade","Takotsubo|stress cardiomyopathy","Pancreatitis"]);
-add("Clinical", "Autoimmune diseases", [
+add("OR & Med Basics", "Autoimmune diseases", [
   "Rheumatoid arthritis|ra","Lupus|sle|systemic lupus erythematosus","Type 1 diabetes|t1d|type one diabetes","Multiple sclerosis|ms","Celiac disease|celiac|coeliac",
   "Psoriasis","Crohn's disease|crohns|crohn","Hashimoto's thyroiditis|hashimotos|hashimoto","Graves' disease|graves","Ulcerative colitis|uc",
   "Myasthenia gravis|mg","Sjogren's syndrome|sjogrens|sjogren","Vitiligo","Scleroderma|systemic sclerosis","Addison's disease|addisons|addison",
   "Guillain-Barre syndrome|guillain barre|gbs","Ankylosing spondylitis","Pernicious anemia|pernicious anaemia","Dermatomyositis","Polymyositis",
   "Autoimmune hepatitis","Primary biliary cholangitis|pbc|primary biliary cirrhosis","Goodpasture syndrome|goodpasture|anti gbm disease",
   "Granulomatosis with polyangiitis|gpa|wegeners","Immune thrombocytopenia|itp","Alopecia areata"]);
-add("Clinical", "Types of anemia", [
+add("OR & Med Basics", "Types of anemia", [
   "Iron deficiency","Sickle cell","Pernicious|b12 deficiency|vitamin b12 deficiency","Aplastic","Thalassemia|thalassaemia|beta thalassemia|alpha thalassemia",
   "Folate deficiency|folic acid deficiency","Hemolytic|haemolytic|autoimmune hemolytic","Anemia of chronic disease|chronic disease|anemia of inflammation",
   "Megaloblastic","G6PD deficiency|g6pd","Hereditary spherocytosis|spherocytosis","Sideroblastic","Fanconi","Paroxysmal nocturnal hemoglobinuria|pnh",
   "Diamond-Blackfan|diamond blackfan","Lead poisoning|lead","Pyruvate kinase deficiency|pk deficiency"]);
-add("Clinical", "Medical imaging techniques", [
+add("OR & Med Basics", "Medical imaging techniques", [
   "X-ray|radiograph|xray","CT|ct scan|computed tomography|cat scan","MRI|magnetic resonance imaging","Ultrasound|sonography|us","PET|pet scan|positron emission tomography",
   "Mammography|mammogram","Echocardiogram|echo|echocardiography","Fluoroscopy","Angiography|angiogram","DEXA|dxa|bone density scan",
   "Bone scan|bone scintigraphy","SPECT","Doppler|doppler ultrasound","MRA|mr angiography","Barium swallow|barium study|barium enema",
   "Nuclear medicine|scintigraphy","HIDA scan|hida|cholescintigraphy","Elastography|fibroscan","Optical coherence tomography|oct"]);
-add("Clinical", "Medical specialties", [
+add("OR & Med Basics", "Medical specialties", [
   "Cardiology","Dermatology","Pediatrics|paediatrics","Neurology","Oncology","Psychiatry","Radiology","Surgery|general surgery","Orthopedics|orthopaedics|orthopedic surgery",
   "Emergency medicine|er|emergency","Anesthesiology|anesthesia|anaesthesia|anaesthetics","Obstetrics|ob","Gynecology|gynaecology|gyn","Ophthalmology",
   "Internal medicine","Family medicine|general practice","Gastroenterology|gi","Endocrinology","Nephrology","Urology","Pulmonology|respiratory medicine",
   "Hematology|haematology","Rheumatology","Otolaryngology|ent","Pathology","Infectious disease|id","Geriatrics","Neurosurgery","Plastic surgery|plastics",
   "Immunology|allergy","Physical medicine|pm&r|physiatry|rehabilitation","Neonatology","Nuclear medicine","Critical care|intensive care|icu"]);
-add("Clinical", "Psychological disorders", [
+add("OR & Med Basics", "Psychological disorders", [
   "Depression|major depressive disorder|mdd","Anxiety|generalized anxiety disorder|gad","Bipolar disorder|bipolar","Schizophrenia","OCD|obsessive compulsive disorder",
   "PTSD|post traumatic stress disorder","ADHD|attention deficit hyperactivity disorder|add","Autism|autism spectrum disorder|asd","Anorexia|anorexia nervosa",
   "Bulimia|bulimia nervosa","Panic disorder","Social anxiety disorder|social anxiety|social phobia","Borderline personality disorder|bpd|borderline",
   "Insomnia","Phobia|specific phobia","Antisocial personality disorder|antisocial|aspd","Narcissistic personality disorder|narcissistic|npd",
   "Dissociative identity disorder|did|multiple personality","Binge eating disorder|binge eating","Schizoaffective disorder|schizoaffective","Seasonal affective disorder|sad",
   "Persistent depressive disorder|dysthymia","Body dysmorphic disorder|bdd","Agoraphobia","Conversion disorder|functional neurological disorder","Hoarding disorder|hoarding"]);
-add("Clinical", "Things measured at a doctor's checkup", [
+add("OR & Med Basics", "Things measured at a doctor's checkup", [
   "Blood pressure|bp","Heart rate|pulse|hr","Temperature|temp","Weight","Height","Respiratory rate|breathing rate|rr","Oxygen saturation|o2 sat|spo2|pulse ox",
   "BMI|body mass index","Blood sugar|blood glucose|glucose","Cholesterol|lipid panel","Pain level|pain","Reflexes","Vision|eyesight","Hearing",
   "Waist circumference","Urinalysis|urine test","A1c|hemoglobin a1c|hba1c","Blood count|cbc"]);
-add("Clinical", "Common diseases and conditions", [
+add("OR & Med Basics", "Common diseases and conditions", [
   "Diabetes","Hypertension|high blood pressure","Asthma","Cancer","Flu|influenza","COVID|covid19|coronavirus","Heart attack|myocardial infarction",
   "Stroke","Pneumonia","Arthritis","Alzheimer's|alzheimers|dementia","Obesity","Depression","Migraine","Anemia","Parkinson's|parkinsons","COPD|emphysema",
   "Osteoporosis","HIV|aids","Tuberculosis|tb","Hepatitis","Kidney stones","Appendicitis","Strep throat","Epilepsy|seizures","Eczema","Acne","Gout",
   "Malaria","Celiac|celiac disease","Hypothyroidism","Sickle cell","Lupus","Multiple sclerosis|ms"]);
-add("Clinical", "Medical tools and equipment", [
+add("OR & Med Basics", "Medical tools and equipment", [
   "Stethoscope","Thermometer","Blood pressure cuff|sphygmomanometer|bp cuff","Syringe","Needle","Otoscope","Scalpel","Gloves","Pulse oximeter|pulse ox",
   "Reflex hammer","Tongue depressor","Defibrillator|aed","Ophthalmoscope","IV|iv line|iv bag","Wheelchair","Stretcher|gurney","Crutches",
   "Bandage|gauze","Sutures|stitches|suture","Forceps","Catheter","Glucometer|glucose meter","Tourniquet","Inhaler","Nebulizer","Speculum",
   "ECG machine|ekg|ecg|electrocardiogram","Ventilator","Endoscope","X-ray machine|xray machine","Ultrasound machine|ultrasound","MRI machine|mri","Hospital bed"]);
-add("Clinical", "Medical prefixes and suffixes", [
+add("OR & Med Basics", "Medical prefixes and suffixes", [
   "-itis","-ectomy","Cardio-|cardi|cardio","Hyper-|hyper","Hypo-|hypo","-ology","Neuro-|neur|neuro","Gastro-|gastr|gastro","-otomy","-ostomy",
   "-algia","-emia|aemia","Derm-|derm|dermat|dermato","Hepat-|hepat|hepato","Nephro-|nephr|nephro","Tachy-|tachy","Brady-|brady","-oma","-osis",
   "-plasty","-scopy","Hemat-|hemat|hemato|hemo|haem","Oste-|oste|osteo","Arthr-|arthr|arthro","Pneumo-|pneum|pneumo|pulmo","Path-|path|patho|pathy",
   "-penia","-megaly","Dys-|dys","Peri-|peri","Endo-|endo","Leuk-|leuk|leuko","Erythr-|erythr|erythro","Cyan-|cyan|cyano","Hemi-|hemi","Brachy-|brachi|brachio"]);
-add("Clinical", "Healthcare jobs", [
+add("OR & Med Basics", "Healthcare jobs", [
   "Doctor|physician|md","Nurse|rn|registered nurse","Pharmacist","Surgeon","Dentist","Physician assistant|pa|physician associate","Nurse practitioner|np",
   "EMT|paramedic|emergency medical technician","Physical therapist|pt|physiotherapist","Medical assistant|ma","Occupational therapist|ot",
   "CNA|certified nursing assistant|nursing assistant","Phlebotomist","Medical scribe|scribe","Radiologic technologist|radiology tech|x ray tech|rad tech",
   "Respiratory therapist|rt","Dietitian|nutritionist","Social worker","Optometrist","Speech-language pathologist|slp|speech therapist","Psychologist",
   "Midwife","Lab technician|medical laboratory scientist|lab tech","Anesthesiologist","CRNA|nurse anesthetist","Sonographer|ultrasound tech",
   "Chiropractor","Podiatrist","Genetic counselor","Pharmacy technician|pharmacy tech","Surgical technologist|surgical tech|scrub tech","Audiologist","Perfusionist"]);
-/* ---------- MICROBIOLOGY (extra) ---------- */
-add("Microbiology", "Diseases caused by bacteria", [
+add("OR & Med Basics", "Diseases caused by bacteria", [
   "Strep throat|strep pharyngitis","Tuberculosis|tb","UTI|urinary tract infection|bladder infection","Pneumonia|bacterial pneumonia","Food poisoning|salmonellosis|salmonella",
   "Lyme disease|lyme","Chlamydia","Gonorrhea|gonorrhoea","Syphilis","Tetanus|lockjaw","Cholera","Whooping cough|pertussis","MRSA infection|mrsa",
   "Meningitis|bacterial meningitis","Strep|scarlet fever","Botulism","Anthrax","C. diff colitis|c diff|clostridioides difficile","Plague|bubonic plague|black death",
   "Typhoid|typhoid fever","Diphtheria","Leprosy|hansen","Stomach ulcers|peptic ulcer|h pylori","Cellulitis","Impetigo","Toxic shock syndrome|tss","Rocky Mountain spotted fever|rmsf","Tularemia"]);
-add("Microbiology", "Parts of a bacterial cell", [
-  "Cell wall","Flagellum|flagella","Ribosome|ribosomes|70s ribosome","Plasma membrane|cell membrane","Cytoplasm","Plasmid","Nucleoid|bacterial chromosome|dna",
-  "Capsule","Pili|pilus","Peptidoglycan","Fimbriae|fimbria","Outer membrane","Endospore|spore","Lipopolysaccharide|lps|endotoxin","Periplasm|periplasmic space",
-  "Teichoic acid","Glycocalyx|slime layer","Porins|porin","Mesosome"]);
-add("Microbiology", "Ways infections spread", [
+add("OR & Med Basics", "Ways infections spread", [
   "Airborne","Droplets|respiratory droplets|coughing|sneezing","Direct contact|contact|touch","Contaminated food|foodborne|food","Contaminated water|waterborne|water",
   "Sexual contact|sexual transmission|sex|sexually transmitted","Blood|bloodborne|blood transfusion","Mosquitoes|mosquito|vector|insect bites","Fecal-oral|fecal oral|feces",
   "Needles|needle sharing|needlestick","Fomites|surfaces|fomite","Ticks|tick bites","Mother to baby|vertical transmission|perinatal|breastfeeding|placenta",
   "Animal bites|zoonotic|animals","Saliva|kissing","Hospital acquired|nosocomial","Organ transplant|transplant"]);
-
+add("OR & Med Basics", "Surgical instruments", [
+  "Scalpel","Forceps","Scissors|surgical scissors","Retractor","Hemostat|clamp","Needle driver|needle holder","Suction|yankauer","Sutures|suture|stitches",
+  "Staples|skin stapler|stapler","Electrocautery|bovie|cautery","Trocar","Laparoscope","Metzenbaum scissors|metz|metzenbaum","Mayo scissors|mayo",
+  "Kelly clamp|kelly","Towel clip|towel clamp","Curette","Allis clamp|allis","Babcock clamp|babcock","Kocher clamp|kocher","DeBakey forceps|debakey",
+  "Adson forceps|adson","Rongeur","Osteotome","Bone saw|oscillating saw","Weitlaner retractor|weitlaner","Deaver retractor|deaver","Army-Navy retractor|army navy","Mosquito clamp|mosquito"]);
+add("OR & Med Basics", "People you'd see in an operating room", [
+  "Surgeon","Anesthesiologist","Scrub nurse|scrub tech|surgical tech|surgical technologist","Circulating nurse|circulator","Nurse","Resident",
+  "Medical student|med student","Nurse anesthetist|crna","Surgical assistant|first assist|first assistant","Physician assistant|pa",
+  "Anesthesia tech|anesthesia technician","Perfusionist","Radiology tech|x ray tech|radiologic technologist","Attending","Fellow",
+  "Device rep|sales rep|industry rep","Neuromonitoring tech|neurophysiologist","Pathologist","Orderly|patient transporter|transporter","Environmental services|evs|housekeeping"]);
+add("OR & Med Basics", "Things you wear or do to stay sterile in the OR", [
+  "Gloves|sterile gloves","Mask|surgical mask","Gown|surgical gown","Scrubs","Surgical cap|cap|bouffant|hair cover","Scrubbing in|hand scrub|surgical scrub|scrub in",
+  "Hand washing|hand hygiene","Shoe covers|booties","Eye protection|goggles|safety glasses","Face shield|visor","Sterile field","Drapes|draping|surgical drapes",
+  "Double gloving","Time out|surgical time out","Lead apron|lead","Chlorhexidine|betadine|skin prep|prep","Autoclave|sterilization","Counts|sponge count|instrument count","Closed gloving"]);
+add("OR & Med Basics", "Common surgeries", [
+  "Appendectomy","C-section|cesarean section|cesarean","Gallbladder removal|cholecystectomy|lap chole","Hernia repair|herniorrhaphy","Knee replacement|tka|total knee",
+  "Hip replacement|tha|total hip","Tonsillectomy","Heart bypass|cabg|coronary artery bypass","Mastectomy","Hysterectomy","ACL reconstruction|acl repair",
+  "Cataract surgery","Angioplasty|stent","Spinal fusion","Colectomy","Gastric bypass|bariatric surgery|sleeve gastrectomy","Kidney transplant|transplant|liver transplant",
+  "Lumpectomy","Carpal tunnel release","Tracheostomy","Thyroidectomy","Prostatectomy","Craniotomy","Vasectomy","Splenectomy","Whipple|pancreaticoduodenectomy","Rotator cuff repair"]);
+add("OR & Med Basics", "Types of anesthesia and sedation", [
+  "General","Local","Spinal","Epidural","Regional","Nerve block|peripheral nerve block","Conscious sedation|moderate sedation|sedation","Twilight|monitored anesthesia care|mac",
+  "Topical","Dissociative|ketamine","Minimal sedation|anxiolysis","Deep sedation","Bier block|intravenous regional","Caudal","Combined spinal epidural|cse"]);
+add("OR & Med Basics", "Hospital units and departments", [
+  "Emergency room|er|ed|emergency department","ICU|intensive care unit","Operating room|or","Pharmacy","Radiology","Labor and delivery|l&d|l and d","NICU|neonatal icu",
+  "Pediatrics|peds","Cardiology","Oncology","Lab|laboratory","Recovery room|pacu|post anesthesia care unit","Med-surg|medical surgical","Psychiatry|psych unit|behavioral health",
+  "Cath lab|catheterization lab","PICU|pediatric icu","Step-down|stepdown|progressive care","Dialysis","Burn unit","Telemetry|tele","Physical therapy|rehab","Endoscopy|gi lab",
+  "Morgue","Blood bank","Pre-op|preop|preoperative","Trauma bay","Sterile processing|central supply"]);
+add("OR & Med Basics", "Common medical abbreviations", [
+  "BP|blood pressure","HR|heart rate","ER|emergency room","ICU|intensive care unit","IV|intravenous","CPR|cardiopulmonary resuscitation","MRI|magnetic resonance imaging",
+  "CT|computed tomography","EKG|ecg|electrocardiogram","PRN|as needed","NPO|nothing by mouth","STAT|immediately","DNR|do not resuscitate","BID|twice a day|twice daily",
+  "PO|by mouth","OR|operating room","Rx|prescription","Dx|diagnosis","Hx|history","Tx|treatment","SOB|shortness of breath","CBC|complete blood count",
+  "TID|three times a day","QID|four times a day","IM|intramuscular","SubQ|subcutaneous|sq|sc","PACU|post anesthesia care unit","H&P|history and physical","ROS|review of systems","HPI|history of present illness"]);
 
 /* ================= MATCHING ================= */
 const FILLER = new Set(["the","nerve","nerves","bone","bones","muscle","muscles","gland","glands","artery","arteries","valve","valves","lobe","disease","syndrome","virus","type","of","and","system"]);
@@ -937,6 +979,9 @@ $("startBtn").onclick = startRun;
 $("nextBtn").onclick = next;
 $("againBtn").onclick = startRun;
 $("menuBtn").onclick = () => { renderStats(); show("menu"); };
+const stopRound = () => { running = false; cancelAnimationFrame(raf); };
+document.querySelectorAll(".js-home").forEach(b => b.onclick = () => { stopRound(); renderStats(); show("menu"); });
+document.querySelectorAll(".js-restart").forEach(b => b.onclick = () => { stopRound(); startRun(); });
 document.addEventListener("keydown", e => {
   if (e.key === "Enter" && !$("reveal").hidden && performance.now() - revealAt > 500 && document.activeElement !== $("nextBtn")) { e.preventDefault(); next(); }
 });
